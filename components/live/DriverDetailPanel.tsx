@@ -124,8 +124,8 @@ export function DriverDetailPanel({ driver, position, fastestLap, onClose }: Dri
               <MiniStat label="PTS" value={standing.points.toString()} />
               <MiniStat label="WINS" value={standing.wins.toString()} />
               <MiniStat label="PODS" value={standing.podiums.toString()} />
-              <MiniStat label="POLES" value={standing.poles.toString()} />
-              <MiniStat label="FL" value={standing.fastestLaps.toString()} />
+              <MiniStat label="POLES" value={(standing.poles ?? 0).toString()} />
+              <MiniStat label="FL" value={(standing.fastestLaps ?? 0).toString()} />
             </div>
           </div>
         )}
@@ -135,12 +135,12 @@ export function DriverDetailPanel({ driver, position, fastestLap, onClose }: Dri
           <div>
             <div className="section-header mb-2">CAREER</div>
             <div className="grid grid-cols-3 gap-2">
-              <MiniStat label="STARTS" value={careerStats.starts.toString()} />
+              <MiniStat label="STARTS" value={(careerStats.starts ?? careerStats.raceStarts ?? 0).toString()} />
               <MiniStat label="WINS" value={careerStats.wins.toString()} />
               <MiniStat label="PODS" value={careerStats.podiums.toString()} />
-              <MiniStat label="POLES" value={careerStats.poles.toString()} />
+              <MiniStat label="POLES" value={(careerStats.poles ?? careerStats.polePositions ?? 0).toString()} />
               <MiniStat label="FL" value={careerStats.fastestLaps.toString()} />
-              <MiniStat label="WDCs" value={careerStats.championships.toString()} />
+              <MiniStat label="WDCs" value={(careerStats.championships ?? careerStats.worldChampionships ?? 0).toString()} />
             </div>
           </div>
         )}

@@ -44,6 +44,7 @@ export interface Driver {
   nationality: string;
   dateOfBirth?: string;
   flagEmoji: string;
+  imageUrl?: string;
 }
 
 export interface Team {
@@ -57,6 +58,10 @@ export interface Team {
   base: string;
   chassis: string;
   powerUnit: string;
+  logoUrl?: string;
+  carImageUrl?: string;
+  teamPrincipal?: string;
+  championships?: number;
 }
 
 export interface Circuit {
@@ -72,6 +77,28 @@ export interface Circuit {
   lapRecordYear: number;
   timezone: string;
   flagEmoji: string;
+  imageUrl?: string;
+  turns?: number;
+}
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  summary: string;
+  content?: string;
+  category: 'RACE REPORT' | 'TECHNICAL' | 'INTERVIEW' | 'BREAKING' | 'FEATURE';
+  publishedAt: string;
+  readTime: string;
+  imageUrl: string;
+  featured?: boolean;
+}
+
+export interface VideoClip {
+  id: string;
+  title: string;
+  duration: string;
+  thumbnailUrl: string;
+  category: string;
 }
 
 export interface LivePosition {
@@ -140,6 +167,7 @@ export interface Race {
 }
 
 export interface LiveRaceData {
+  sessionId?: string;
   race: Race;
   circuit: Circuit;
   positions: LivePosition[];
@@ -156,21 +184,25 @@ export interface WeatherData {
   trackTemp: number;     // °C
   humidity: number;      // %
   windSpeed: number;     // km/h
-  windDirection: string; // e.g. "NW"
+  windDirection?: string; // e.g. "NW"
   rainfall: boolean;
-  rainProbability: number; // %
-  condition: string;     // e.g. "Partly Cloudy"
-  available: boolean;
+  rainProbability?: number; // %
+  condition?: string;     // e.g. "Partly Cloudy"
+  available?: boolean;
 }
 
 export interface QualifyingResult {
   driverId: string;
   position: number;
+  q1?: string;
+  q2?: string;
+  q3?: string;
   q1Time?: string;
   q2Time?: string;
   q3Time?: string;
-  bestTime: string;
-  gap: string;
+  bestTime?: string;
+  gap?: string;
+  laps?: number;
 }
 
 export interface RaceResult {
@@ -191,8 +223,9 @@ export interface DriverStanding {
   points: number;
   wins: number;
   podiums: number;
-  poles: number;
-  fastestLaps: number;
+  poles?: number;
+  fastestLaps?: number;
+  change?: number;
 }
 
 export interface ConstructorStanding {
@@ -201,29 +234,37 @@ export interface ConstructorStanding {
   points: number;
   wins: number;
   podiums: number;
-  poles: number;
+  poles?: number;
+  change?: number;
 }
 
 export interface DriverSeasonStats {
-  driverId: string;
+  driverId?: string;
   season: number;
-  races: number;
+  races?: number;
   wins: number;
   podiums: number;
-  poles: number;
+  poles?: number;
+  polePositions?: number;
   fastestLaps: number;
   points: number;
   dnfs: number;
-  highestFinish: number;
+  highestFinish?: number;
+  position?: number;
 }
 
 export interface DriverCareerStats {
-  driverId: string;
-  starts: number;
+  driverId?: string;
+  starts?: number;
+  raceEntries?: number;
+  raceStarts?: number;
   wins: number;
   podiums: number;
-  poles: number;
+  poles?: number;
+  polePositions?: number;
   fastestLaps: number;
-  championships: number;
-  debutYear: number;
+  championships?: number;
+  worldChampionships?: number;
+  careerPoints?: number;
+  debutYear?: number;
 }

@@ -6,8 +6,7 @@ import { MOCK_DRIVERS, MOCK_TEAMS } from '@/lib/mock-data';
 import { TyreBadge } from '@/components/ui/TyreBadge';
 import { TeamColorBar } from '@/components/ui/TeamColorBar';
 import { formatPositionChange, getDriverStatusColor } from '@/lib/utils';
-import { DriverDetailPanel } from '@/components/live/DriverDetailPanel';
-import { Trophy, Zap } from 'lucide-react';
+import { Trophy, Zap, ChevronRight } from 'lucide-react';
 
 interface LeaderboardProps {
   data: LiveRaceData;
@@ -16,9 +15,6 @@ interface LeaderboardProps {
 
 export function Leaderboard({ data, onSelectDriver }: LeaderboardProps) {
   const [selectedDriver, setSelectedDriver] = useState<string | null>(null);
-
-  const selectedPosition = data.positions.find(p => p.driverId === selectedDriver);
-  const selectedDriverData = selectedDriver ? MOCK_DRIVERS[selectedDriver] : null;
 
   const handleRowClick = (driverId: string) => {
     const next = selectedDriver === driverId ? null : driverId;
@@ -29,154 +25,160 @@ export function Leaderboard({ data, onSelectDriver }: LeaderboardProps) {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-4">
-      {/* Main table */}
-      <div className="flex-1 f1-card overflow-hidden">
-        {/* Table header */}
-        <div className="hidden md:grid grid-cols-[2rem_1fr_7rem_4rem_3.5rem_5.5rem_4rem_5rem] gap-2 px-4 py-2 border-b border-white/8">
-          {['POS', 'DRIVER', 'TEAM', 'TYRE', 'LAP', 'GAP', 'PITS', 'STATUS'].map(h => (
-            <span key={h} className="section-header text-right first:text-left">{h}</span>
-          ))}
-        </div>
+    <div className="bg-[#24272D] border border-white/5 rounded-2xl overflow-hidden shadow-2xl">
+      {/* Table header */}
+      <div className="hidden md:grid grid-cols-[2.5rem_1fr_8rem_4.5rem_3.5rem_5.5rem_4rem_5rem] gap-2 px-6 py-3 border-b border-white/10 text-[10px] font-bold text-[#AEB4BE] uppercase tracking-wider">
+        <span>POS</span>
+        <span>DRIVER</span>
+        <span>TEAM</span>
+        <span className="text-center">TYRE</span>
+        <span className="text-right">LAP</span>
+        <span className="text-right">GAP / INT</span>
+        <span className="text-center">PITS</span>
+        <span className="text-right">STATUS</span>
+      </div>
 
-        <div className="divide-y divide-white/5">
-          {data.positions.map((pos) => (
-            <LeaderboardRow
+      <div className="divide-y divide-white/5">
+        {data.positions.map((pos) => {
+          const driver = MOCK_DRIVERS[pos.driverId];
+          const team = MOCK_TEAMS[driver?.teamId ?? ''];
+          const posChange = formatPositionChange(pos.position, pos.previousPosition);
+          const statusColor = getDriverStatusColor(pos.status);
+          const isLeader = pos.position === 1;
+          const hasFastestLap = pos.driverId === data.fastestLap?.driverId;
+          const isSelected = selectedDriver === pos.driverId;
+          const isDNF = pos.status === 'DNF' || pos.status === 'OUT';
+
+          if (!driver) return null;
+
+          return (
+            <button
               key={pos.driverId}
-              pos={pos}
-              fastestLapDriver={data.fastestLap?.driverId}
-              isSelected={selectedDriver === pos.driverId}
               onClick={() => handleRowClick(pos.driverId)}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Driver detail panel */}
-      {selectedDriverData && selectedPosition && (
-        <div className="lg:w-80 xl:w-96">
-          <DriverDetailPanel
-            driver={selectedDriverData}
-            position={selectedPosition}
-            fastestLap={data.fastestLap}
-            onClose={() => setSelectedDriver(null)}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-interface LeaderboardRowProps {
-  pos: LivePosition;
-  fastestLapDriver?: string;
-  isSelected: boolean;
-  onClick: () => void;
-}
-
-function LeaderboardRow({ pos, fastestLapDriver, isSelected, onClick }: LeaderboardRowProps) {
-  const driver = MOCK_DRIVERS[pos.driverId];
-  const team = MOCK_TEAMS[driver?.teamId ?? ''];
-  const posChange = formatPositionChange(pos.position, pos.previousPosition);
-  const statusColor = getDriverStatusColor(pos.status);
-  const isLeader = pos.position === 1;
-  const hasFastestLap = pos.driverId === fastestLapDriver;
-  const isDNF = pos.status === 'DNF' || pos.status === 'OUT';
-
-  if (!driver) return null;
-
-  return (
-    <button
-      onClick={onClick}
-      className={`
-        leaderboard-row w-full text-left
-        ${isLeader ? 'leader' : ''}
-        ${isSelected ? 'bg-white/8 border-l-2 border-l-[#e10600]' : ''}
-        ${isDNF ? 'opacity-50' : ''}
-      `}
-      aria-label={`${driver.name} — Position ${pos.position}`}
-      aria-pressed={isSelected}
-    >
-      {/* Mobile layout */}
-      <div className="md:hidden flex items-center gap-3 px-4 py-3">
-        <TeamColorBar teamId={driver.teamId} />
-        <span className="w-7 text-center font-mono font-bold text-sm text-gray-400">{pos.position}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-sm">{driver.flagEmoji}</span>
-            <span className="font-bold text-sm">{driver.abbreviation}</span>
-            {hasFastestLap && <Zap size={12} className="text-purple-400" aria-label="Fastest lap" />}
-            {isLeader && <Trophy size={12} className="text-yellow-400" aria-label="Race leader" />}
-          </div>
-          <span className="text-xs text-gray-500">{team?.shortName}</span>
-        </div>
-        <div className="text-right">
-          <div className="font-mono text-sm text-gray-300">{pos.gapToLeader}</div>
-          <div className="flex items-center justify-end gap-1">
-            <TyreBadge compound={pos.tyre} size="sm" />
-            <span className="text-xs text-gray-600">{pos.tyreAge}L</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop layout */}
-      <div className="hidden md:grid grid-cols-[2rem_1fr_7rem_4rem_3.5rem_5.5rem_4rem_5rem] gap-2 items-center px-4 py-3">
-        {/* POS */}
-        <div className="flex items-center gap-1">
-          <TeamColorBar teamId={driver.teamId} />
-          <span className={`font-mono font-bold text-sm ${isLeader ? 'text-yellow-400' : 'text-gray-300'}`}>
-            {pos.position}
-          </span>
-        </div>
-
-        {/* DRIVER */}
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-sm">{driver.flagEmoji}</span>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-bold text-sm tracking-wide">{driver.abbreviation}</span>
-              <span className="hidden xl:block text-xs text-gray-500 truncate">{driver.name}</span>
-              {hasFastestLap && (
-                <Zap size={11} className="text-purple-400 shrink-0" aria-label="Fastest lap holder" />
-              )}
-              {isLeader && (
-                <Trophy size={11} className="text-yellow-400 shrink-0" aria-label="Race leader" />
-              )}
-            </div>
-            {/* Position change */}
-            <span
-              className={`text-[10px] font-semibold ${posChange.color}`}
-              aria-label={`Position change: ${posChange.label}`}
+              className={`
+                w-full text-left transition-colors cursor-pointer
+                ${isLeader ? 'bg-yellow-400/5 border-l-2 border-l-yellow-400' : 'hover:bg-white/5'}
+                ${isSelected ? 'bg-white/10 border-l-2 border-l-[#E10600]' : ''}
+                ${isDNF ? 'opacity-40' : ''}
+              `}
             >
-              {posChange.symbol} {posChange.gained !== 0 ? Math.abs(posChange.gained) : ''}
-            </span>
-          </div>
-        </div>
+              {/* Mobile layout */}
+              <div className="md:hidden flex items-center gap-3 px-4 py-3">
+                <TeamColorBar teamId={driver.teamId} />
+                <span className="w-6 text-center font-mono font-black text-sm text-white">{pos.position}</span>
 
-        {/* TEAM */}
-        <span className="text-xs text-gray-500 truncate text-right">{team?.shortName}</span>
+                {driver.imageUrl && (
+                  <img
+                    src={driver.imageUrl}
+                    alt={driver.name}
+                    className="w-9 h-9 rounded-full bg-black/40 border border-white/10 object-cover object-top shrink-0"
+                    loading="lazy"
+                  />
+                )}
 
-        {/* TYRE */}
-        <div className="flex justify-center">
-          <TyreBadge compound={pos.tyre} age={pos.tyreAge} showAge />
-        </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-sm text-white">{driver.abbreviation}</span>
+                    <span className="text-xs text-[#AEB4BE] font-mono">#{driver.number}</span>
+                    {hasFastestLap && <Zap size={12} className="text-purple-400" />}
+                    {isLeader && <Trophy size={12} className="text-yellow-400" />}
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    {team?.logoUrl && (
+                      <img src={team.logoUrl} alt={team.name} className="w-4 h-4 object-contain" />
+                    )}
+                    <span className="text-xs text-[#AEB4BE] truncate">{team?.shortName}</span>
+                  </div>
+                </div>
 
-        {/* LAP */}
-        <span className="font-mono text-sm text-gray-300 text-right">{pos.lap}</span>
+                <div className="text-right">
+                  <div className="font-mono text-xs font-bold text-white">{pos.gapToLeader}</div>
+                  <div className="flex items-center justify-end gap-1 mt-0.5">
+                    <TyreBadge compound={pos.tyre} size="sm" />
+                    <span className="text-[10px] text-[#AEB4BE]">{pos.tyreAge}L</span>
+                  </div>
+                </div>
+              </div>
 
-        {/* GAP */}
-        <span className={`font-mono text-sm text-right ${isLeader ? 'text-yellow-400 font-bold' : 'text-gray-300'}`}>
-          {pos.gapToLeader}
-        </span>
+              {/* Desktop layout */}
+              <div className="hidden md:grid grid-cols-[2.5rem_1fr_8rem_4.5rem_3.5rem_5.5rem_4rem_5rem] gap-2 items-center px-6 py-3.5">
+                {/* POS */}
+                <div className="flex items-center gap-2">
+                  <TeamColorBar teamId={driver.teamId} />
+                  <span className={`font-mono font-black text-sm ${isLeader ? 'text-yellow-400' : 'text-white'}`}>
+                    {pos.position}
+                  </span>
+                </div>
 
-        {/* PITS */}
-        <span className="font-mono text-sm text-gray-400 text-right">{pos.pitStops}</span>
+                {/* DRIVER WITH FACE */}
+                <div className="flex items-center gap-3 min-w-0">
+                  {driver.imageUrl ? (
+                    <img
+                      src={driver.imageUrl}
+                      alt={driver.name}
+                      className="w-8 h-8 rounded-full bg-black/40 border border-white/10 object-cover object-top shrink-0 shadow-md"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <span className="text-sm">{driver.flagEmoji}</span>
+                  )}
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="font-black text-sm text-white tracking-wide">{driver.abbreviation}</span>
+                      <span className="hidden xl:block text-xs text-[#AEB4BE] truncate">{driver.name}</span>
+                      {hasFastestLap && (
+                        <span className="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                          <Zap size={9} /> FL
+                        </span>
+                      )}
+                      {isLeader && (
+                        <Trophy size={12} className="text-yellow-400 shrink-0" />
+                      )}
+                    </div>
+                    <div className="text-[11px] text-[#AEB4BE] font-mono">#{driver.number} &bull; {driver.nationality}</div>
+                  </div>
+                </div>
 
-        {/* STATUS */}
-        <span className={`text-xs font-semibold text-right ${statusColor}`}>
-          {pos.status}
-        </span>
+                {/* TEAM WITH LOGO */}
+                <div className="flex items-center gap-2 text-xs font-semibold text-white truncate">
+                  {team?.logoUrl && (
+                    <img src={team.logoUrl} alt={team.name} className="h-5 w-auto max-w-[28px] object-contain shrink-0" />
+                  )}
+                  <span className="truncate" style={{ color: team?.color }}>{team?.shortName}</span>
+                </div>
+
+                {/* TYRE */}
+                <div className="flex items-center justify-center gap-1.5">
+                  <TyreBadge compound={pos.tyre} size="sm" />
+                  <span className="font-mono text-xs text-[#AEB4BE]">{pos.tyreAge}L</span>
+                </div>
+
+                {/* LAP */}
+                <div className="text-right font-mono text-xs text-[#AEB4BE]">
+                  {pos.lap}
+                </div>
+
+                {/* GAP */}
+                <div className="text-right font-mono text-xs font-bold text-white">
+                  {pos.gapToLeader}
+                </div>
+
+                {/* PITS */}
+                <div className="text-center font-mono text-xs text-[#AEB4BE]">
+                  {pos.pitStops}
+                </div>
+
+                {/* STATUS */}
+                <div className="text-right">
+                  <span className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded ${statusColor}`}>
+                    {pos.status}
+                  </span>
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
-    </button>
+    </div>
   );
 }

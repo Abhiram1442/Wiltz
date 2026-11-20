@@ -97,7 +97,7 @@ export default async function TeamProfilePage({ params }: TeamPageProps) {
                 { label: 'POINTS', value: standing.points.toString() },
                 { label: 'WINS', value: standing.wins.toString() },
                 { label: 'PODIUMS', value: standing.podiums.toString() },
-                { label: 'POLES', value: standing.poles.toString() },
+                { label: 'POLES', value: (standing.poles ?? 0).toString() },
               ].map(({ label, value }) => (
                 <div key={label} className="text-center bg-[#1a1a1a] rounded p-4">
                   <div className="text-2xl font-black">{value}</div>

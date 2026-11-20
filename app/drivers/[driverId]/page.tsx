@@ -76,8 +76,8 @@ export default async function DriverProfilePage({ params }: DriverPageProps) {
                   { label: 'POINTS', value: standing.points.toString() },
                   { label: 'WINS', value: standing.wins.toString() },
                   { label: 'PODIUMS', value: standing.podiums.toString() },
-                  { label: 'POLES', value: standing.poles.toString() },
-                  { label: 'FASTEST LAPS', value: standing.fastestLaps.toString() },
+                  { label: 'POLES', value: (standing.poles ?? 0).toString() },
+                  { label: 'FASTEST LAPS', value: (standing.fastestLaps ?? 0).toString() },
                 ].map(({ label, value, accent }) => (
                   <div key={label} className="text-center bg-[#1a1a1a] rounded p-3">
                     <div className={`text-xl font-black ${accent ? 'text-[#e10600]' : ''}`}>{value}</div>
@@ -94,12 +94,12 @@ export default async function DriverProfilePage({ params }: DriverPageProps) {
               <h2 className="section-header mb-4">CAREER STATISTICS</h2>
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { label: 'STARTS', value: career.starts.toString() },
+                  { label: 'STARTS', value: (career.starts ?? career.raceStarts ?? 0).toString() },
                   { label: 'WINS', value: career.wins.toString() },
                   { label: 'PODIUMS', value: career.podiums.toString() },
-                  { label: 'POLES', value: career.poles.toString() },
+                  { label: 'POLES', value: (career.poles ?? career.polePositions ?? 0).toString() },
                   { label: 'FASTEST LAPS', value: career.fastestLaps.toString() },
-                  { label: 'CHAMPIONSHIPS', value: career.championships.toString(), accent: career.championships > 0 },
+                  { label: 'CHAMPIONSHIPS', value: (career.championships ?? career.worldChampionships ?? 0).toString(), accent: (career.championships ?? career.worldChampionships ?? 0) > 0 },
                 ].map(({ label, value, accent }) => (
                   <div key={label} className="text-center bg-[#1a1a1a] rounded p-3">
                     <div className={`text-xl font-black ${accent ? 'text-yellow-400' : ''}`}>{value}</div>
@@ -107,7 +107,7 @@ export default async function DriverProfilePage({ params }: DriverPageProps) {
                   </div>
                 ))}
               </div>
-              <div className="mt-3 text-xs text-gray-600 text-center">Debut: {career.debutYear}</div>
+              <div className="mt-3 text-xs text-gray-600 text-center">Debut: {career.debutYear ?? 'F1'}</div>
             </div>
           )}
         </div>

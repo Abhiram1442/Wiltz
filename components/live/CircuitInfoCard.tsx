@@ -41,10 +41,10 @@ export function CircuitInfoCard({ circuit, weather }: CircuitInfoCardProps) {
             <div className="grid grid-cols-2 gap-2">
               <WeatherStat icon={<Thermometer size={12} />} label="Air Temp" value={`${weather.airTemp}°C`} />
               <WeatherStat icon={<Thermometer size={12} className="text-orange-400" />} label="Track Temp" value={`${weather.trackTemp}°C`} />
-              <WeatherStat icon={<Wind size={12} />} label="Wind" value={`${weather.windSpeed} km/h ${weather.windDirection}`} />
+              <WeatherStat icon={<Wind size={12} />} label="Wind" value={`${weather.windSpeed} km/h ${weather.windDirection ?? 'NE'}`} />
               <WeatherStat icon={<Droplets size={12} />} label="Humidity" value={`${weather.humidity}%`} />
-              <WeatherStat icon={<Cloud size={12} />} label="Condition" value={weather.condition} />
-              <WeatherStat icon={<Droplets size={12} className="text-blue-400" />} label="Rain chance" value={`${weather.rainProbability}%`} />
+              <WeatherStat icon={<Cloud size={12} />} label="Condition" value={weather.condition ?? 'Clear'} />
+              <WeatherStat icon={<Droplets size={12} className="text-blue-400" />} label="Rain chance" value={`${weather.rainProbability ?? 0}%`} />
             </div>
           </div>
         ) : (
