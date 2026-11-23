@@ -9,11 +9,14 @@ import {
   MOCK_DRIVERS,
   MOCK_TEAMS,
   MOCK_CALENDAR,
+  MOCK_CIRCUITS,
 } from '@/lib/mock-data';
-import { MOCK_NEWS_ARTICLES, MOCK_VIDEOS } from '@/lib/mock-news';
+import { MOCK_NEWS_ARTICLES } from '@/lib/mock-news';
 import { MockDataBanner } from '@/components/ui/MockDataBanner';
-import { formatCountdown, formatShortDate } from '@/lib/utils';
-import { Radio, ChevronRight, Trophy, Zap, Play, Calendar, Flag, ArrowRight, Clock } from 'lucide-react';
+import { formatCountdown } from '@/lib/utils';
+import { Radio, ChevronRight, Trophy, Zap, Calendar, Flag, ArrowRight, Gauge, Activity, Compass } from 'lucide-react';
+import { AnimatedDriverCard } from '@/components/cards/AnimatedDriverCard';
+import { ConstructorCard } from '@/components/cards/ConstructorCard';
 
 export default function HomePage() {
   const liveData = MOCK_LIVE_RACE;
@@ -22,7 +25,7 @@ export default function HomePage() {
   const leaderTeam = MOCK_TEAMS[leader?.teamId ?? ''];
 
   const nextRace = MOCK_CALENDAR.find(r => r.status === 'UPCOMING') || MOCK_CALENDAR[16];
-  const lastRace = [...MOCK_CALENDAR].filter(r => r.status === 'COMPLETED').pop();
+  const nextCircuit = MOCK_CIRCUITS[nextRace?.circuitId ?? ''] || MOCK_CIRCUITS['monza'];
 
   const [countdown, setCountdown] = useState('');
   useEffect(() => {
@@ -33,276 +36,241 @@ export default function HomePage() {
     return () => clearInterval(id);
   }, [nextRace]);
 
-  const featuredArticle = MOCK_NEWS_ARTICLES[0];
-  const topDrivers = MOCK_DRIVER_STANDINGS.slice(0, 3);
+  const top3Drivers = MOCK_DRIVER_STANDINGS.slice(0, 3);
+  const top3Teams = MOCK_CONSTRUCTOR_STANDINGS.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-[#101114] text-white">
+    <div className="min-h-screen text-white pb-24">
       <MockDataBanner />
 
-      {/* ── 1. CINEMATIC HERO SECTION (Formula1.com inspired) ── */}
-      <section className="relative min-h-[520px] bg-[#101114] border-b border-[#24272D] overflow-hidden flex items-center">
-        {/* Background Motorsport Photography */}
+      {/* ── 1. CINEMATIC BROADCAST HERO ── */}
+      <section className="relative min-h-[560px] border-b border-white/10 overflow-hidden flex items-center bg-gradient-to-b from-[#0e1015] via-[#07080a] to-[#07080a]">
+        {/* Background Motorsport Visual Atmosphere */}
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30 transform scale-105 hover:scale-100 transition-transform duration-1000"
+          className="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity scale-105 pointer-events-none"
           style={{
             backgroundImage: 'url("https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1920&q=80")',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#101114] via-[#101114]/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#101114] via-[#101114]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-[#07080a]/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07080a] via-[#07080a]/90 to-transparent" />
 
-        <div className="relative container mx-auto px-4 py-12">
-          <div className="max-w-2xl">
-            {/* Live Session Alert Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E10600]/20 border border-[#E10600]/40 text-[#E10600] text-xs font-black uppercase tracking-widest mb-4">
-              <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
-              LIVE GRAND PRIX &bull; LAP {liveData.race.currentLap} / {liveData.race.totalLaps}
+        {/* Ambient Velocity Light Glows */}
+        <div className="absolute -top-24 right-1/4 w-[500px] h-[500px] bg-[#e10600]/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/2 -left-24 w-[400px] h-[400px] bg-[#00d2be]/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="relative container mx-auto px-4 py-16">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            {/* Left Telemetry Banner & Action */}
+            <div className="lg:col-span-7">
+              {/* Live Session Alert Badge */}
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#e10600]/20 border border-[#e10600]/40 text-[#ff1801] text-xs font-black uppercase tracking-widest mb-6 shadow-[0_0_20px_rgba(225,6,0,0.3)]">
+                <span className="w-2 h-2 rounded-full bg-[#e10600] animate-ping" />
+                <span>LIVE GRAND PRIX &bull; LAP {liveData.race.currentLap} / {liveData.race.totalLaps}</span>
+              </div>
+
+              <h1 className="text-4xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-none mb-4">
+                {liveData.race.name}
+              </h1>
+
+              <p className="text-base sm:text-lg text-gray-400 font-medium max-w-xl mb-8 leading-relaxed">
+                Autodromo Nazionale Monza &bull; Round {liveData.race.round}. High-velocity telemetry stream, real-time car tracking, and sector splits.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href="/live"
+                  className="flex items-center gap-2.5 px-6 py-4 bg-[#e10600] hover:bg-[#ff1801] text-white text-xs font-black uppercase tracking-wider rounded-xl transition shadow-[0_0_25px_rgba(225,6,0,0.5)] hover:scale-105 duration-200"
+                >
+                  <Radio size={16} className="animate-pulse" />
+                  <span>Launch Live Telemetry & Track</span>
+                </Link>
+
+                <Link
+                  href="/calendar"
+                  className="flex items-center gap-2 px-5 py-4 bg-[#141720] hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider rounded-xl border border-white/10 transition"
+                >
+                  <Calendar size={15} className="text-gray-400" />
+                  <span>2025 Race Calendar</span>
+                </Link>
+              </div>
             </div>
 
-            <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight text-white leading-none mb-3">
-              {liveData.race.name}
-            </h1>
-            <p className="text-base sm:text-lg text-[#AEB4BE] font-medium mb-6">
-              Autodromo Nazionale Monza &bull; Round {liveData.race.round} &bull; Verstappen defends against Norris charge into Curva Grande.
-            </p>
+            {/* Right Telemetry Spotlight Pod */}
+            <div className="lg:col-span-5">
+              <div className="rounded-2xl f1-glass-panel p-6 border border-white/10 relative overflow-hidden">
+                <div className="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold text-gray-400 uppercase">
+                    <Activity size={14} className="text-[#00d2be]" />
+                    <span>Current Race Leader</span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-black/60 text-[#00d2be] font-mono text-xs font-black border border-white/10">
+                    P1
+                  </span>
+                </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-wrap items-center gap-4">
-              <Link
-                href="/live"
-                className="flex items-center gap-2 px-6 py-3.5 bg-[#E10600] hover:bg-[#c00500] text-white text-xs font-black uppercase tracking-wider rounded-xl transition shadow-xl shadow-[#E10600]/30 hover:scale-105"
-              >
-                <Radio size={15} className="animate-pulse" />
-                <span>Launch Live Track & Leaderboard</span>
-              </Link>
+                <div className="flex items-center gap-4">
+                  {leader?.imageUrl && (
+                    <img
+                      src={leader.imageUrl}
+                      alt={leader.name}
+                      className="w-20 h-20 rounded-2xl object-cover bg-white/5 border border-white/10 drop-shadow-lg"
+                    />
+                  )}
+                  <div>
+                    <div className="text-xs font-mono font-bold text-[#e10600] uppercase tracking-wider">
+                      #{leader?.number} &bull; {leader?.abbreviation}
+                    </div>
+                    <h3 className="text-2xl font-black text-white leading-tight">
+                      {leader?.name}
+                    </h3>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {leaderTeam?.name} &bull; Gap: <span className="font-mono text-white font-bold">INTERVAL</span>
+                    </div>
+                  </div>
+                </div>
 
-              <Link
-                href="/calendar"
-                className="flex items-center gap-2 px-5 py-3.5 bg-[#24272D] hover:bg-white/10 text-white text-xs font-bold uppercase tracking-wider rounded-xl border border-white/10 transition"
-              >
-                <Calendar size={14} />
-                <span>Full Race Hub</span>
-              </Link>
+                <div className="grid grid-cols-2 gap-2 mt-5 pt-4 border-t border-white/5">
+                  <div className="bg-black/40 rounded-xl p-2.5 border border-white/5">
+                    <div className="text-[10px] text-gray-400 uppercase font-bold">Fastest Lap</div>
+                    <div className="text-xs font-mono font-black text-[#b388ff] mt-0.5">
+                      {liveData.fastestLap.lapTime}
+                    </div>
+                  </div>
+                  <div className="bg-black/40 rounded-xl p-2.5 border border-white/5">
+                    <div className="text-[10px] text-gray-400 uppercase font-bold">Track Status</div>
+                    <div className="text-xs font-mono font-black text-[#00d084] mt-0.5 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse" />
+                      <span>{liveData.race.raceStatus}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-12 space-y-16">
-        {/* ── 2. NEXT RACE & COUNTDOWN BAR ── */}
-        <section className="bg-[#24272D] border border-white/5 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
-          <div className="grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-4">
-              <span className="text-xs font-bold text-[#E10600] uppercase tracking-widest block mb-1">
-                Upcoming Grand Prix
+      {/* ── 2. NEXT GRAND PRIX COUNTDOWN CHRONOGRAPH ── */}
+      <div className="container mx-auto px-4 -mt-6 relative z-20">
+        <div className="rounded-2xl bg-gradient-to-r from-[#141720] via-[#10131b] to-[#141720] border border-white/10 p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          <div className="grid lg:grid-cols-12 gap-6 items-center">
+            <div className="lg:col-span-5">
+              <span className="text-xs font-mono font-bold text-[#e10600] uppercase tracking-widest block mb-1">
+                Upcoming Round {nextRace.round}
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white">{nextRace.name}</h2>
-              <p className="text-xs text-[#AEB4BE] mt-1">{nextRace.country} &bull; Round {nextRace.round}</p>
+              <p className="text-xs text-gray-400 mt-1 flex items-center gap-2">
+                <span>{nextCircuit?.name}</span>
+                <span>&bull;</span>
+                <span className="text-gray-300">{nextRace.country}</span>
+              </p>
             </div>
 
-            <div className="lg:col-span-5 flex items-center justify-center lg:justify-start gap-4">
-              <div className="text-center p-3 rounded-xl bg-[#101114]/60 border border-white/5 min-w-[72px]">
-                <div className="text-2xl font-black font-mono text-white">06</div>
-                <div className="text-[9px] text-[#AEB4BE] uppercase tracking-wider font-bold">DAYS</div>
+            <div className="lg:col-span-7 flex flex-wrap items-center justify-between lg:justify-end gap-6">
+              <div className="bg-black/50 border border-white/10 px-5 py-3 rounded-xl flex items-center gap-3">
+                <Calendar size={18} className="text-[#00d2be]" />
+                <div className="text-left font-mono">
+                  <div className="text-[10px] text-gray-400 uppercase font-bold">Session Countdown</div>
+                  <div className="text-base sm:text-lg font-black text-[#00d2be] tracking-wider">
+                    {countdown || 'Calculating...'}
+                  </div>
+                </div>
               </div>
-              <div className="text-center p-3 rounded-xl bg-[#101114]/60 border border-white/5 min-w-[72px]">
-                <div className="text-2xl font-black font-mono text-white">14</div>
-                <div className="text-[9px] text-[#AEB4BE] uppercase tracking-wider font-bold">HRS</div>
-              </div>
-              <div className="text-center p-3 rounded-xl bg-[#101114]/60 border border-white/5 min-w-[72px]">
-                <div className="text-2xl font-black font-mono text-white">32</div>
-                <div className="text-[9px] text-[#AEB4BE] uppercase tracking-wider font-bold">MINS</div>
-              </div>
-              <div className="text-center p-3 rounded-xl bg-[#101114]/60 border border-white/5 min-w-[72px]">
-                <div className="text-2xl font-black font-mono text-[#E10600]">18</div>
-                <div className="text-[9px] text-[#AEB4BE] uppercase tracking-wider font-bold">SECS</div>
-              </div>
-            </div>
 
-            <div className="lg:col-span-3 flex justify-end">
               <Link
-                href="/calendar"
-                className="w-full sm:w-auto text-center px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 text-white font-bold text-xs uppercase tracking-wider border border-white/10 transition"
+                href={`/races/${nextRace.id}`}
+                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-[#e10600] text-white text-xs font-bold uppercase tracking-wider transition border border-white/10"
               >
-                View Weekend Schedule &rarr;
+                <span>Race Schedule</span>
+                <ArrowRight size={14} />
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </div>
 
-        {/* ── 3. CHAMPIONSHIP PREVIEW (TOP 3 DRIVERS WITH HEADSHOTS) ── */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <span className="text-xs font-bold text-[#E10600] uppercase tracking-widest">Championship Fight</span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-0.5">
-                World Championship Leaders
-              </h2>
+      {/* ── 3. WORLD CHAMPIONSHIP PODIUM SHOWCASE ── */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#e10600] uppercase tracking-wider mb-1">
+              <Trophy size={14} />
+              <span>Championship Standings</span>
             </div>
-            <Link href="/standings" className="text-xs font-bold text-[#00B8D9] hover:underline flex items-center gap-1">
-              Complete Standings <ArrowRight size={14} />
-            </Link>
+            <h2 className="text-3xl font-black uppercase text-white tracking-tight">
+              Drivers Championship Leaders
+            </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {topDrivers.map((s, idx) => {
-              const driver = MOCK_DRIVERS[s.driverId];
-              const team = MOCK_TEAMS[s.teamId];
-              if (!driver) return null;
+          <Link
+            href="/standings"
+            className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-white uppercase tracking-wider transition"
+          >
+            <span>Full Standings</span>
+            <ChevronRight size={14} className="text-[#e10600]" />
+          </Link>
+        </div>
 
-              return (
-                <div
-                  key={s.driverId}
-                  className="relative bg-[#24272D] border border-white/5 rounded-2xl p-6 overflow-hidden shadow-xl hover:border-[#E10600]/50 transition-all hover:-translate-y-1 group"
-                >
-                  <div className="h-1.5 absolute top-0 inset-x-0" style={{ backgroundColor: team?.color }} />
-                  <div className="flex items-start justify-between">
-                    <span className="font-mono text-4xl font-black text-white/15">0{idx + 1}</span>
-                    <span className="text-sm font-bold font-mono text-[#00B8D9]">{s.points} PTS</span>
-                  </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {top3Drivers.map((s) => {
+            const driver = MOCK_DRIVERS[s.driverId];
+            const team = MOCK_TEAMS[s.teamId];
+            if (!driver) return null;
 
-                  <div className="flex items-center gap-4 my-4">
-                    {driver.imageUrl && (
-                      <img
-                        src={driver.imageUrl}
-                        alt={driver.name}
-                        className="w-16 h-16 rounded-full object-cover object-top border-2 border-white/10 shrink-0 shadow-lg group-hover:scale-105 transition-transform"
-                      />
-                    )}
-                    <div>
-                      <div className="text-xs text-[#AEB4BE] flex items-center gap-1 font-semibold">
-                        <span>{driver.flagEmoji}</span>
-                        <span>{driver.nationality}</span>
-                      </div>
-                      <h3 className="font-black text-lg text-white leading-tight">{driver.name}</h3>
-                      <p className="text-xs font-bold mt-0.5" style={{ color: team?.color }}>{team?.name}</p>
-                    </div>
-                  </div>
+            return (
+              <AnimatedDriverCard
+                key={driver.id}
+                driver={driver}
+                team={team}
+                rank={s.position}
+                points={s.points}
+              />
+            );
+          })}
+        </div>
+      </div>
 
-                  <div className="flex items-center justify-between text-xs text-[#AEB4BE] pt-3 border-t border-white/5 font-mono">
-                    <span>{s.wins} Grand Prix Wins</span>
-                    <span>{s.podiums} Podiums</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ── 4. EDITORIAL NEWSROOM & ANALYSIS ── */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <span className="text-xs font-bold text-[#E10600] uppercase tracking-widest">Paddock Reports</span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-0.5">
-                Latest News & Technical Briefs
-              </h2>
+      {/* ── 4. CONSTRUCTOR VELOCITY CARDS ── */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#00d2be] uppercase tracking-wider mb-1">
+              <Gauge size={14} />
+              <span>Constructors Championship</span>
             </div>
-            <Link href="/news" className="text-xs font-bold text-[#00B8D9] hover:underline flex items-center gap-1">
-              Read All News <ArrowRight size={14} />
-            </Link>
+            <h2 className="text-3xl font-black uppercase text-white tracking-tight">
+              Leading Constructors & Liveries
+            </h2>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-6">
-            {/* Big Featured Story */}
-            <div className="lg:col-span-7 bg-[#24272D] border border-white/5 rounded-2xl overflow-hidden group cursor-pointer shadow-xl flex flex-col justify-between">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  src={featuredArticle.imageUrl}
-                  alt={featuredArticle.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <span className="absolute bottom-3 left-3 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#E10600] text-white">
-                  {featuredArticle.category}
-                </span>
-              </div>
-              <div className="p-6">
-                <div className="text-xs text-[#AEB4BE] font-mono flex items-center gap-1 mb-2">
-                  <Clock size={12} /> {featuredArticle.readTime}
-                </div>
-                <h3 className="text-xl sm:text-2xl font-black text-white leading-tight group-hover:text-[#00B8D9] transition-colors mb-2">
-                  {featuredArticle.title}
-                </h3>
-                <p className="text-xs text-[#AEB4BE] line-clamp-2">
-                  {featuredArticle.summary}
-                </p>
-              </div>
-            </div>
+          <Link
+            href="/teams"
+            className="flex items-center gap-1.5 text-xs font-bold text-gray-400 hover:text-white uppercase tracking-wider transition"
+          >
+            <span>All 10 Constructors</span>
+            <ChevronRight size={14} className="text-[#00d2be]" />
+          </Link>
+        </div>
 
-            {/* Smaller Supporting Stories */}
-            <div className="lg:col-span-5 flex flex-col gap-4">
-              {MOCK_NEWS_ARTICLES.slice(1, 3).map((article) => (
-                <div
-                  key={article.id}
-                  className="bg-[#24272D] border border-white/5 rounded-2xl p-4 flex gap-4 group cursor-pointer hover:border-[#E10600]/40 transition shadow-lg"
-                >
-                  <img
-                    src={article.imageUrl}
-                    alt={article.title}
-                    className="w-28 h-24 rounded-xl object-cover shrink-0 group-hover:scale-105 transition-transform"
-                  />
-                  <div className="flex flex-col justify-between min-w-0">
-                    <div>
-                      <span className="text-[10px] font-bold text-[#00B8D9] uppercase tracking-wider block mb-1">
-                        {article.category}
-                      </span>
-                      <h4 className="font-bold text-xs text-white leading-snug line-clamp-2 group-hover:text-[#00B8D9] transition-colors">
-                        {article.title}
-                      </h4>
-                    </div>
-                    <span className="text-[10px] text-[#AEB4BE] font-mono">{article.readTime}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {top3Teams.map((s) => {
+            const team = MOCK_TEAMS[s.teamId];
+            if (!team) return null;
+            const teamDrivers = team.drivers.map(id => MOCK_DRIVERS[id]).filter(Boolean);
 
-        {/* ── 5. MUST-WATCH VIDEOS & ONBOARDS ── */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <span className="text-xs font-bold text-[#E10600] uppercase tracking-widest">Video Hub</span>
-              <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mt-0.5">
-                Must-Watch Race Highlights & Onboards
-              </h2>
-            </div>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {MOCK_VIDEOS.map((vid) => (
-              <div
-                key={vid.id}
-                className="bg-[#24272D] border border-white/5 rounded-xl overflow-hidden group hover:border-[#E10600]/50 transition-all cursor-pointer shadow-md"
-              >
-                <div className="relative h-36 overflow-hidden">
-                  <img
-                    src={vid.thumbnailUrl}
-                    alt={vid.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-colors">
-                    <div className="w-10 h-10 rounded-full bg-[#E10600] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Play size={16} className="ml-0.5 fill-white" />
-                    </div>
-                  </div>
-                  <span className="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] font-mono text-white">
-                    {vid.duration}
-                  </span>
-                </div>
-                <div className="p-3">
-                  <span className="text-[9px] font-bold text-[#00B8D9] uppercase tracking-wider block mb-1">
-                    {vid.category}
-                  </span>
-                  <h4 className="font-bold text-xs text-white leading-snug line-clamp-2">
-                    {vid.title}
-                  </h4>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+            return (
+              <ConstructorCard
+                key={team.id}
+                team={team}
+                rank={s.position}
+                points={s.points}
+                drivers={teamDrivers}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );
