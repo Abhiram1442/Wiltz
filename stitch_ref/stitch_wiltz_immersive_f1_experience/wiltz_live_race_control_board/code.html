@@ -1,0 +1,444 @@
+<!DOCTYPE html><html lang="en" class="dark scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WILTZ — Live Race Control Board</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#E10600',
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
+        'dark-primary': '#FF5540',
+        'dark-on-primary': '#2A0200',
+        'dark-primary-container': '#E10600',
+        'dark-on-primary-container': '#FFFFFF',
+        'dark-secondary': '#A1A8B3',
+        'dark-on-secondary': '#14171F',
+        'dark-secondary-container': '#242936',
+        'dark-on-secondary-container': '#F4F6F8',
+        'dark-tertiary': '#38BDF8',
+        'dark-on-tertiary': '#082F49',
+        'dark-background': '#0D0F14',
+        'dark-on-background': '#F4F6F8',
+        'dark-surface': '#0D0F14',
+        'dark-on-surface': '#F4F6F8',
+        'dark-surface-container-lowest': '#08090C',
+        'dark-surface-container-low': '#14171F',
+        'dark-surface-container': '#1B1F29',
+        'dark-surface-container-high': '#242936',
+        'dark-surface-container-highest': '#2D3342',
+        'dark-on-surface-variant': '#A1A8B3',
+        'dark-outline': '#4B5263',
+        'dark-outline-variant': '#262B38',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Archivo"', 'sans-serif'],
+        'headline': ['"Archivo"', 'sans-serif'],
+        'title': ['"Archivo"', 'sans-serif'],
+        'body': ['"Commissioner"', 'sans-serif'],
+        'label': ['"Archivo"', 'sans-serif'],
+        'mono': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['72px', { lineHeight: '76px', letterSpacing: '-1.5px', fontWeight: '900' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-0.75px', fontWeight: '900' }],
+        'display-lg': ['52px', { lineHeight: '56px', letterSpacing: '-1px', fontWeight: '800' }],
+        'display-lg-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '800' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.75px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.75px', fontWeight: '600' }],
+        'mono-lg': ['20px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&amp;family=Commissioner:wght@400;500;600&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    @keyframes telemetryDash {
+      0% { stroke-dashoffset: 320; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .telemetry-trace-line {
+      stroke-dasharray: 320;
+      animation: telemetryDash 3.6s linear infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .telemetry-trace-line { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+<body class="bg-dark-surface text-dark-on-surface font-body antialiased selection:bg-dark-primary-container selection:text-dark-on-primary-container">
+
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Broadcast Header (Shell Parity with WiltzHome) -->
+    <header class="sticky top-0 z-50 bg-dark-surface/85 backdrop-blur-md border-b border-dark-outline-variant">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin h-16 flex items-center justify-between gap-gutter-lg">
+        <a href="../home/WiltzHome.html" class="flex items-center gap-gutter-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary rounded-sm">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+            <path d="M2 18L10 2H16L8 18H2Z" fill="#E10600"></path>
+            <path d="M12 18L20 2H26L18 18H12Z" fill="#F4F6F8"></path>
+          </svg>
+          <span class="font-display text-title-lg tracking-wider uppercase text-dark-on-surface" data-design-text-token="title-lg">WILTZ</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-gutter-lg">
+          <a href="../home/WiltzHome.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Home</a>
+          <a href="#top" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface border-b-2 border-accent py-gutter-xs" data-design-text-token="label-lg">Live</a>
+          <a href="../home/WiltzHome.html#schedule" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Schedule</a>
+          <a href="../home/WiltzHome.html#results" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Results</a>
+          <a href="../home/WiltzHome.html#drivers" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Drivers</a>
+          <a href="../home/WiltzHome.html#teams" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Teams</a>
+          <a href="../home/WiltzHome.html#circuits" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Circuits</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <span class="hidden sm:inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-dark-surface-container border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant">
+            <span class="w-2 h-2 rounded-full bg-warning" aria-hidden="true"></span>
+            <span data-design-text-token="label-sm">STANDBY FEED</span>
+          </span>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant rounded-sm">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Drawer -->
+      <div id="mobile-nav" class="hidden lg:hidden border-t border-dark-outline-variant bg-dark-surface-container-low px-gutter-md py-gutter-md">
+        <div class="grid grid-cols-2 gap-gutter-sm">
+          <a href="../home/WiltzHome.html" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Home</a>
+          <a href="#top" class="font-label text-label-lg uppercase text-dark-on-surface py-gutter-xs">Live</a>
+          <a href="../home/WiltzHome.html#schedule" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Schedule</a>
+          <a href="../home/WiltzHome.html#results" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Results</a>
+          <a href="../home/WiltzHome.html#drivers" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Drivers</a>
+          <a href="../home/WiltzHome.html#teams" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Teams</a>
+          <a href="../home/WiltzHome.html#circuits" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Circuits</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="flex-1 bg-dark-surface-container-lowest">
+
+      <!-- RACE CONTROL TOP TELEMETRY BANNER -->
+      <section class="border-b border-dark-outline-variant bg-dark-surface-container-low">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-lg flex flex-col lg:flex-row lg:items-center justify-between gap-gutter-lg">
+          <div class="flex flex-col gap-gutter-xs">
+            <div class="flex flex-wrap items-center gap-gutter-sm">
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider" data-design-text-token="label-sm">RACE CONTROL</span>
+              <span class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-high border border-dark-outline-variant font-mono text-mono-md text-warning tabular-nums" data-design-text-token="mono-md">OFFLINE · STATIC 2025 REFERENCE</span>
+            </div>
+            <h1 class="font-display text-headline-lg-mobile md:text-headline-lg uppercase tracking-tight text-dark-on-surface text-balance" data-design-text-token="headline-lg">
+              Live Broadcast Timing Tower
+            </h1>
+            <p class="font-body text-body-md text-dark-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-md">
+              No live FIA timing stream is currently active. Displaying the verified 2025 grid reference layout—connect Supabase or OpenF1 live telemetry to stream real-time lap intervals.
+            </p>
+          </div>
+
+          <!-- Pit-Wall Session Metrics Strip -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-gutter-sm shrink-0">
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm px-gutter-md py-gutter-sm">
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Session</span>
+              <p class="font-mono text-mono-md text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-md">STANDBY</p>
+            </div>
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm px-gutter-md py-gutter-sm">
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Lap Counter</span>
+              <p class="font-mono text-mono-md text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-md">-- / 52</p>
+            </div>
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm px-gutter-md py-gutter-sm">
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Track Status</span>
+              <p class="font-mono text-mono-md text-warning tabular-nums mt-gutter-xs" data-design-text-token="mono-md">NO FEED</p>
+            </div>
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm px-gutter-md py-gutter-sm">
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Grid Cars</span>
+              <p class="font-mono text-mono-md text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-md">20 DRIVERS</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN BROADCAST PIT-WALL GRID -->
+      <section class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-lg items-start">
+
+          <!-- LEFT 8 COLS: OFFICIAL BROADCAST TIMING TOWER -->
+          <div class="lg:col-span-8 flex flex-col gap-gutter-md">
+            <!-- Filter Controls Bar -->
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-md flex flex-wrap items-center justify-between gap-gutter-md">
+              <div class="flex flex-wrap items-center gap-gutter-xs">
+                <button type="button" data-filter="all" class="tower-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider">2025 Reference Grid</button>
+                <button type="button" data-filter="top10" class="tower-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-highest">Top 10</button>
+              </div>
+              <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">CLICK DRIVER FOR TELEMETRY</span>
+            </div>
+
+            <!-- Timing Tower Table -->
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm overflow-x-auto">
+              <table class="w-full text-left border-collapse min-w-[680px]">
+                <thead>
+                  <tr class="border-b border-dark-outline-variant bg-dark-surface-container-low">
+                    <th class="py-gutter-sm px-gutter-md font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Pos</th>
+                    <th class="py-gutter-sm px-gutter-sm font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Chg</th>
+                    <th class="py-gutter-sm px-gutter-sm font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">No</th>
+                    <th class="py-gutter-sm px-gutter-md font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Driver / Constructor</th>
+                    <th class="py-gutter-sm px-gutter-sm font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Tyre</th>
+                    <th class="py-gutter-sm px-gutter-sm font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Sectors</th>
+                    <th class="py-gutter-sm px-gutter-md font-label text-label-sm uppercase text-dark-on-surface-variant text-right" data-design-text-token="label-sm">Gap</th>
+                    <th class="py-gutter-sm px-gutter-md font-label text-label-sm uppercase text-dark-on-surface-variant text-right" data-design-text-token="label-sm">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="timing-tower-body" class="divide-y divide-dark-outline-variant">
+                  <!-- Populated via structured 2025 FIA Reference Grid script -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- RIGHT 4 COLS: TELEMETRY INSPECTOR & RACE CONTROL -->
+          <div class="lg:col-span-4 flex flex-col gap-gutter-lg">
+
+            <!-- Selected Driver Telemetry Card -->
+            <article class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-lg flex flex-col gap-gutter-md">
+              <header class="flex items-start justify-between gap-gutter-md border-b border-dark-outline-variant pb-gutter-md">
+                <div>
+                  <span class="font-label text-label-sm uppercase tracking-wider text-dark-primary" data-design-text-token="label-sm">Telemetry Focus</span>
+                  <h2 id="tel-driver-name" class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs" data-design-text-token="headline-md">Charles Leclerc</h2>
+                  <p id="tel-driver-team" class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Scuderia Ferrari HP</p>
+                </div>
+                <span id="tel-driver-num" class="font-mono text-mono-lg text-dark-on-surface bg-dark-surface-container-high border border-dark-outline-variant px-gutter-sm py-gutter-xs rounded-sm tabular-nums" data-design-text-token="mono-lg">#16</span>
+              </header>
+
+              <!-- Animated Telemetry Trace Graphic -->
+              <div class="bg-dark-surface-container-lowest border border-dark-outline-variant rounded-sm p-gutter-md flex flex-col gap-gutter-sm">
+                <div class="flex items-center justify-between">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Telemetry Trace</span>
+                  <span class="font-mono text-mono-md text-dark-tertiary tabular-nums" data-design-text-token="mono-md">ERS / THROTTLE</span>
+                </div>
+                <svg viewBox="0 0 320 88" class="w-full h-24" aria-label="Animated telemetry waveform preview">
+                  <line x1="0" y1="22" x2="320" y2="22" stroke="#262B38" stroke-width="1"></line>
+                  <line x1="0" y1="44" x2="320" y2="44" stroke="#262B38" stroke-width="1"></line>
+                  <line x1="0" y1="66" x2="320" y2="66" stroke="#262B38" stroke-width="1"></line>
+                  <path class="telemetry-trace-line" d="M0 68 L38 68 L52 20 L110 20 L125 56 L148 56 L164 16 L232 16 L248 64 L274 64 L290 22 L320 22" fill="none" stroke="#10B981" stroke-width="2.5" stroke-linecap="round"></path>
+                  <path class="telemetry-trace-line" d="M0 74 L112 74 L124 30 L146 30 L160 74 L236 74 L248 34 L272 34 L286 74 L320 74" fill="none" stroke="#FF5540" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                <div class="flex items-center justify-between font-mono text-mono-md text-dark-on-surface-variant">
+                  <span class="text-success" data-design-text-token="mono-md">THROTTLE</span>
+                  <span class="text-dark-primary" data-design-text-token="mono-md">BRAKE PRESSURE</span>
+                </div>
+              </div>
+
+              <!-- Driver Telemetry Metrics -->
+              <div class="grid grid-cols-3 gap-gutter-sm">
+                <div class="bg-dark-surface-container-low border border-dark-outline-variant rounded-sm p-gutter-sm">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Tyre</span>
+                  <p id="tel-driver-tyre" class="font-mono text-mono-md text-dark-on-surface mt-gutter-xs" data-design-text-token="mono-md">MEDIUM</p>
+                </div>
+                <div class="bg-dark-surface-container-low border border-dark-outline-variant rounded-sm p-gutter-sm">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">DRS</span>
+                  <p class="font-mono text-mono-md text-dark-on-surface-variant mt-gutter-xs" data-design-text-token="mono-md">STANDBY</p>
+                </div>
+                <div class="bg-dark-surface-container-low border border-dark-outline-variant rounded-sm p-gutter-sm">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Live Gap</span>
+                  <p class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums mt-gutter-xs" data-design-text-token="mono-md">--.---</p>
+                </div>
+              </div>
+            </article>
+
+            <!-- FIA Flag Matrix & Race Control Log -->
+            <article class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-lg flex flex-col gap-gutter-md">
+              <header class="flex items-center justify-between border-b border-dark-outline-variant pb-gutter-sm">
+                <h2 class="font-headline text-title-lg text-dark-on-surface" data-design-text-token="title-lg">FIA Race Control</h2>
+                <span class="font-mono text-mono-md text-warning" data-design-text-token="mono-md">STANDBY</span>
+              </header>
+
+              <div class="grid grid-cols-5 gap-gutter-xs text-center">
+                <span class="py-gutter-xs rounded-sm bg-dark-surface-container-low border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant" data-design-text-token="label-sm">GRN</span>
+                <span class="py-gutter-xs rounded-sm bg-dark-surface-container-low border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant" data-design-text-token="label-sm">YLW</span>
+                <span class="py-gutter-xs rounded-sm bg-dark-surface-container-low border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant" data-design-text-token="label-sm">VSC</span>
+                <span class="py-gutter-xs rounded-sm bg-dark-surface-container-low border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant" data-design-text-token="label-sm">SC</span>
+                <span class="py-gutter-xs rounded-sm bg-dark-surface-container-low border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant" data-design-text-token="label-sm">RED</span>
+              </div>
+
+              <div class="bg-dark-surface-container-lowest border border-dark-outline-variant rounded-sm p-gutter-md flex flex-col gap-gutter-sm">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">SYSTEM</span>
+                  <span class="font-label text-label-sm uppercase text-warning" data-design-text-token="label-sm">Awaiting Stream</span>
+                </div>
+                <p class="font-body text-body-md text-dark-on-surface-variant text-pretty" data-design-text-token="body-md">
+                  Live race control messages, pit stops, and sector purple times activate automatically when connected to a live FIA / OpenF1 telemetry source.
+                </p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer (Shell Parity with WiltzHome) -->
+    <footer class="border-t border-dark-outline-variant bg-dark-surface-container-lowest">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl flex flex-col sm:flex-row items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="font-display text-title-md uppercase tracking-wider text-dark-on-surface" data-design-text-token="title-md">WILTZ</span>
+          <span class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Formula 1 Digital Experience · 2025 FIA Season</span>
+        </div>
+        <span class="font-mono text-mono-md text-dark-on-surface-variant" data-design-text-token="mono-md">TELEMETRY PRECISION · PHASE 02</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (menuBtn && mobileNav) {
+      menuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+      });
+    }
+
+    // Verified 2025 FIA Formula 1 Grid Reference (Static Archive — No Simulated Live Race)
+    const drivers2025 = [
+      { pos: 1, chg: '—', no: 4, code: 'NOR', name: 'Lando Norris', team: 'McLaren Formula 1 Team', color: '#FF8000', tyre: 'M' },
+      { pos: 2, chg: '—', no: 81, code: 'PIA', name: 'Oscar Piastri', team: 'McLaren Formula 1 Team', color: '#FF8000', tyre: 'M' },
+      { pos: 3, chg: '—', no: 16, code: 'LEC', name: 'Charles Leclerc', team: 'Scuderia Ferrari HP', color: '#E10600', tyre: 'M' },
+      { pos: 4, chg: '—', no: 44, code: 'HAM', name: 'Lewis Hamilton', team: 'Scuderia Ferrari HP', color: '#E10600', tyre: 'M' },
+      { pos: 5, chg: '—', no: 1, code: 'VER', name: 'Max Verstappen', team: 'Oracle Red Bull Racing', color: '#3671C6', tyre: 'M' },
+      { pos: 6, chg: '—', no: 63, code: 'RUS', name: 'George Russell', team: 'Mercedes-AMG Petronas', color: '#27F4D2', tyre: 'H' },
+      { pos: 7, chg: '—', no: 12, code: 'ANT', name: 'Andrea Kimi Antonelli', team: 'Mercedes-AMG Petronas', color: '#27F4D2', tyre: 'H' },
+      { pos: 8, chg: '—', no: 14, code: 'ALO', name: 'Fernando Alonso', team: 'Aston Martin Aramco', color: '#229971', tyre: 'M' },
+      { pos: 9, chg: '—', no: 55, code: 'SAI', name: 'Carlos Sainz', team: 'Atlassian Williams Racing', color: '#64C4FF', tyre: 'M' },
+      { pos: 10, chg: '—', no: 23, code: 'ALB', name: 'Alexander Albon', team: 'Atlassian Williams Racing', color: '#64C4FF', tyre: 'H' },
+      { pos: 11, chg: '—', no: 10, code: 'GAS', name: 'Pierre Gasly', team: 'BWT Alpine F1 Team', color: '#FF87BC', tyre: 'M' },
+      { pos: 12, chg: '—', no: 22, code: 'TSU', name: 'Yuki Tsunoda', team: 'Oracle Red Bull Racing', color: '#3671C6', tyre: 'S' }
+    ];
+
+    const tbody = document.getElementById('timing-tower-body');
+    const telName = document.getElementById('tel-driver-name');
+    const telTeam = document.getElementById('tel-driver-team');
+    const telNum = document.getElementById('tel-driver-num');
+    const telTyre = document.getElementById('tel-driver-tyre');
+
+    const tyreMap = { S: 'SOFT', M: 'MEDIUM', H: 'HARD' };
+    let activeCode = 'LEC';
+
+    function renderTower(limit = drivers2025.length) {
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      drivers2025.slice(0, limit).forEach((d) => {
+        const tr = document.createElement('tr');
+        const isSelected = d.code === activeCode;
+        tr.className = (isSelected ? 'bg-dark-surface-container-high ' : 'hover:bg-dark-surface-container-low ') + 'cursor-pointer transition-colors duration-state-change';
+        tr.innerHTML = `
+          <td class="py-gutter-sm px-gutter-md font-mono text-mono-md text-dark-on-surface tabular-nums">${String(d.pos).padStart(2, '0')}</td>
+          <td class="py-gutter-sm px-gutter-sm font-mono text-mono-md text-dark-on-surface-variant tabular-nums">${d.chg}</td>
+          <td class="py-gutter-sm px-gutter-sm font-mono text-mono-md text-dark-on-surface-variant tabular-nums">#${d.no}</td>
+          <td class="py-gutter-sm px-gutter-md">
+            <div class="flex items-center gap-gutter-sm">
+              <span class="w-1 h-5 rounded-full shrink-0" style="background-color: ${d.color};"></span>
+              <span class="font-headline text-title-md text-dark-on-surface">${d.code}</span>
+              <span class="font-body text-body-md text-dark-on-surface-variant hidden sm:inline">${d.name}</span>
+            </div>
+          </td>
+          <td class="py-gutter-sm px-gutter-sm">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full border border-dark-outline font-mono text-mono-md text-dark-on-surface">${d.tyre}</span>
+          </td>
+          <td class="py-gutter-sm px-gutter-sm">
+            <div class="flex items-center gap-gutter-xs" aria-label="Sector status standby">
+              <span class="w-4 h-1.5 rounded-sm bg-dark-outline"></span>
+              <span class="w-4 h-1.5 rounded-sm bg-dark-outline"></span>
+              <span class="w-4 h-1.5 rounded-sm bg-dark-outline"></span>
+            </div>
+          </td>
+          <td class="py-gutter-sm px-gutter-md font-mono text-mono-md text-dark-on-surface-variant tabular-nums text-right">--.---</td>
+          <td class="py-gutter-sm px-gutter-md font-label text-label-sm uppercase text-dark-on-surface-variant text-right">STANDBY</td>
+        `;
+        tr.addEventListener('click', () => {
+          activeCode = d.code;
+          if (telName) telName.textContent = d.name;
+          if (telTeam) telTeam.textContent = d.team;
+          if (telNum) telNum.textContent = '#' + d.no;
+          if (telTyre) telTyre.textContent = tyreMap[d.tyre] || 'MEDIUM';
+          renderTower(limit);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    renderTower();
+
+    document.querySelectorAll('.tower-filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.tower-filter-btn').forEach((b) => {
+          b.className = 'tower-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-highest';
+        });
+        btn.className = 'tower-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider';
+        renderTower(filter === 'top10' ? 10 : drivers2025.length);
+      });
+    });
+  </script>
+
+
+</body></html>

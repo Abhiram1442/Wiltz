@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="en" class="dark scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WILTZ — Driver Documentary Profile</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#E10600',
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
+        'dark-primary': '#FF5540',
+        'dark-on-primary': '#2A0200',
+        'dark-primary-container': '#E10600',
+        'dark-on-primary-container': '#FFFFFF',
+        'dark-secondary': '#A1A8B3',
+        'dark-on-secondary': '#14171F',
+        'dark-secondary-container': '#242936',
+        'dark-on-secondary-container': '#F4F6F8',
+        'dark-tertiary': '#38BDF8',
+        'dark-on-tertiary': '#082F49',
+        'dark-background': '#0D0F14',
+        'dark-on-background': '#F4F6F8',
+        'dark-surface': '#0D0F14',
+        'dark-on-surface': '#F4F6F8',
+        'dark-surface-container-lowest': '#08090C',
+        'dark-surface-container-low': '#14171F',
+        'dark-surface-container': '#1B1F29',
+        'dark-surface-container-high': '#242936',
+        'dark-surface-container-highest': '#2D3342',
+        'dark-on-surface-variant': '#A1A8B3',
+        'dark-outline': '#4B5263',
+        'dark-outline-variant': '#262B38',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Archivo"', 'sans-serif'],
+        'headline': ['"Archivo"', 'sans-serif'],
+        'title': ['"Archivo"', 'sans-serif'],
+        'body': ['"Commissioner"', 'sans-serif'],
+        'label': ['"Archivo"', 'sans-serif'],
+        'mono': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['72px', { lineHeight: '76px', letterSpacing: '-1.5px', fontWeight: '900' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-0.75px', fontWeight: '900' }],
+        'display-lg': ['52px', { lineHeight: '56px', letterSpacing: '-1px', fontWeight: '800' }],
+        'display-lg-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '800' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.75px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.75px', fontWeight: '600' }],
+        'mono-lg': ['20px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&amp;family=Commissioner:wght@400;500;600&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    @keyframes docReveal {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .doc-reveal {
+      animation: docReveal 420ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .doc-reveal { animation: none; }
+    }
+  </style>
+</head>
+<body class="bg-dark-surface text-dark-on-surface font-body antialiased selection:bg-dark-primary-container selection:text-dark-on-primary-container">
+
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Broadcast Header (Shell Parity) -->
+    <header class="sticky top-0 z-50 bg-dark-surface/85 backdrop-blur-md border-b border-dark-outline-variant">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin h-16 flex items-center justify-between gap-gutter-lg">
+        <a href="../home/WiltzHome.html" class="flex items-center gap-gutter-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary rounded-sm">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+            <path d="M2 18L10 2H16L8 18H2Z" fill="#E10600"></path>
+            <path d="M12 18L20 2H26L18 18H12Z" fill="#F4F6F8"></path>
+          </svg>
+          <span class="font-display text-title-lg tracking-wider uppercase text-dark-on-surface" data-design-text-token="title-lg">WILTZ</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-gutter-lg">
+          <a href="../home/WiltzHome.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Home</a>
+          <a href="../live/WiltzLiveBoard.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Live</a>
+          <a href="../home/WiltzHome.html#schedule" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Schedule</a>
+          <a href="../home/WiltzHome.html#results" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Results</a>
+          <a href="WiltzDrivers.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface border-b-2 border-accent py-gutter-xs" data-design-text-token="label-lg">Drivers</a>
+          <a href="../home/WiltzHome.html#teams" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Teams</a>
+          <a href="../home/WiltzHome.html#circuits" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Circuits</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <a href="WiltzDrivers.html" class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container border border-dark-outline-variant font-label text-label-sm uppercase text-dark-on-surface hover:bg-dark-surface-container-high">
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_back</span>
+            <span data-design-text-token="label-sm">All Drivers</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="flex-1">
+
+      <!-- DRIVER PROFILE SWITCHER BAR -->
+      <div class="border-b border-dark-outline-variant bg-dark-surface-container-low">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-md flex flex-wrap items-center justify-between gap-gutter-md">
+          <span class="font-label text-label-sm uppercase tracking-widest text-dark-on-surface-variant" data-design-text-token="label-sm">Driver Dossier</span>
+          <div class="flex flex-wrap items-center gap-gutter-xs">
+            <button type="button" data-code="HAM" class="profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-mono text-mono-md">#44 HAM</button>
+            <button type="button" data-code="LEC" class="profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-mono text-mono-md">#16 LEC</button>
+            <button type="button" data-code="NOR" class="profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-mono text-mono-md">#4 NOR</button>
+            <button type="button" data-code="VER" class="profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-mono text-mono-md">#1 VER</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CINEMATIC DOCUMENTARY HERO -->
+      <section class="relative border-b border-dark-outline-variant bg-dark-surface-container-lowest overflow-hidden">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-center">
+            <!-- Portrait Column -->
+            <div class="lg:col-span-5 doc-reveal">
+              <div class="relative rounded-md overflow-hidden border border-dark-outline-variant bg-dark-surface-container">
+                <img id="prof-img" src="https://lh3.googleusercontent.com/aida/ALJJyrAdxKN2bwKXLVo4exCG_JNFYeE89K1pHuMgR4WdbcRV5WtJ_KKryO6JGUoq-WICdRE1Pn95EK-5s2BIphuOtAlWuly-nY5-kYQcWVXo0IBp7bpaGheyUEG9vgkwKTtKCYIplVzM83ekpNv9znCn53YPfmor4jecy8Nb3Vl33QoI8AR1O8CB586jYrj5eOgU5oDmqGToL-6GJV7zKwCk5s08RtSgPt0r177l50Lfr860bvdnN4hhfzOsNrI" alt="Lewis Hamilton documentary portrait" class="w-full h-[520px] object-cover">
+                <span id="prof-num-badge" class="absolute bottom-gutter-lg right-gutter-lg px-gutter-md py-gutter-sm rounded-sm bg-dark-surface-container-lowest/90 border border-dark-outline-variant font-display text-headline-lg text-dark-on-surface tabular-nums">#44</span>
+              </div>
+            </div>
+
+            <!-- Documentary Bio & Stats Column -->
+            <div class="lg:col-span-7 flex flex-col gap-gutter-lg doc-reveal">
+              <div class="flex flex-wrap items-center gap-gutter-sm">
+                <span id="prof-team-badge" class="px-gutter-sm py-gutter-xs rounded-full bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider" data-design-text-token="label-sm">Scuderia Ferrari HP</span>
+                <span id="prof-nat" class="font-mono text-mono-md text-dark-on-surface-variant uppercase" data-design-text-token="mono-md">UNITED KINGDOM</span>
+              </div>
+
+              <h1 id="prof-name" class="font-display text-display-xl-mobile md:text-display-xl uppercase tracking-tight text-dark-on-surface text-balance" data-design-text-token="display-xl">
+                Lewis Hamilton
+              </h1>
+
+              <p id="prof-bio" class="font-body text-body-lg text-dark-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+                Seven-time FIA Formula One World Champion and the sport&#39;s all-time leader in Grand Prix victories and pole positions, embarking on a landmark chapter in scarlet with Scuderia Ferrari HP for the 2025 season.
+              </p>
+
+              <!-- Core Verified Metadata Grid -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-gutter-md pt-gutter-md border-t border-dark-outline-variant">
+                <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-md">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">World Titles</span>
+                  <p id="prof-titles" class="font-mono text-mono-lg text-dark-primary tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">7</p>
+                </div>
+                <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-md">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Date of Birth</span>
+                  <p id="prof-dob" class="font-mono text-mono-md text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-md">07 JAN 1985</p>
+                </div>
+                <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-md">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Teams</span>
+                  <p id="prof-teams-count" class="font-mono text-mono-lg text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">3</p>
+                </div>
+                <div class="bg-dark-surface-container border border-dark-outline-variant rounded-sm p-gutter-md">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">2025 Season</span>
+                  <p class="font-mono text-mono-md text-warning tabular-nums mt-gutter-xs" data-design-text-token="mono-md">DB SYNC</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE CAREER TIMELINE & TEAMS REPRESENTED -->
+      <section class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl">
+          <div class="lg:col-span-8 flex flex-col gap-gutter-lg">
+            <div>
+              <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">Career Documentary</span>
+              <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-on-surface mt-gutter-xs" data-design-text-token="headline-lg">Formula 1 Timeline</h2>
+            </div>
+
+            <div id="prof-timeline" class="flex flex-col gap-gutter-md border-l-2 border-dark-outline-variant pl-gutter-lg">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <div class="lg:col-span-4 flex flex-col gap-gutter-lg">
+            <div>
+              <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">Constructors</span>
+              <h2 class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs" data-design-text-token="headline-md">Teams Represented</h2>
+            </div>
+            <div id="prof-teams-list" class="bg-dark-surface-container border border-dark-outline-variant rounded-md divide-y divide-dark-outline-variant">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer (Shell Parity) -->
+    <footer class="border-t border-dark-outline-variant bg-dark-surface-container-lowest">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl flex flex-col sm:flex-row items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="font-display text-title-md uppercase tracking-wider text-dark-on-surface" data-design-text-token="title-md">WILTZ</span>
+          <span class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Formula 1 Digital Experience · 2025 FIA Season</span>
+        </div>
+        <span class="font-mono text-mono-md text-dark-on-surface-variant" data-design-text-token="mono-md">TELEMETRY PRECISION · PHASE 06</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script data-stitch-original-script="481c126d8aec9ff4===../../images/driver_hamilton.jpg|||197030a665dfd565===../../images/driver_leclerc.jpg|||33612bc2502bd53e===../../images/driver_norris.jpg|||27fcf5604fd47257===../../images/driver_verstappen.jpg">
+    const profiles = {
+      HAM: {
+        name: 'Lewis Hamilton',
+        num: '#44',
+        team: 'Scuderia Ferrari HP',
+        nat: 'UNITED KINGDOM',
+        dob: '07 JAN 1985',
+        titles: '7',
+        teamsCount: '3',
+        img: 'https://lh3.googleusercontent.com/aida/ALJJyrAdxKN2bwKXLVo4exCG_JNFYeE89K1pHuMgR4WdbcRV5WtJ_KKryO6JGUoq-WICdRE1Pn95EK-5s2BIphuOtAlWuly-nY5-kYQcWVXo0IBp7bpaGheyUEG9vgkwKTtKCYIplVzM83ekpNv9znCn53YPfmor4jecy8Nb3Vl33QoI8AR1O8CB586jYrj5eOgU5oDmqGToL-6GJV7zKwCk5s08RtSgPt0r177l50Lfr860bvdnN4hhfzOsNrI',
+        bio: "Seven-time FIA Formula One World Champion and the sport's all-time leader in Grand Prix victories and pole positions, embarking on a landmark chapter in scarlet with Scuderia Ferrari HP for the 2025 season.",
+        teams: [
+          { name: 'McLaren', years: '2007–2012' },
+          { name: 'Mercedes-AMG Petronas', years: '2013–2024' },
+          { name: 'Scuderia Ferrari HP', years: '2025–Present' }
+        ],
+        timeline: [
+          { year: '2007', title: 'Formula 1 Debut with McLaren', detail: 'Scored nine consecutive podiums from his debut Grand Prix in Melbourne and finished runner-up by a single point.' },
+          { year: '2008', title: 'First World Championship', detail: 'Captured his maiden Drivers Championship in dramatic fashion on the final lap at Interlagos.' },
+          { year: '2014–2020', title: 'Six Titles with Mercedes-AMG', detail: 'Dominated the hybrid era with six championships in seven seasons, tying the all-time record of seven titles.' },
+          { year: '2025', title: 'Scuderia Ferrari HP Era', detail: 'Joined Charles Leclerc in Maranello to spearhead Ferrari’s 2025 World Championship campaign.' }
+        ]
+      },
+      LEC: {
+        name: 'Charles Leclerc',
+        num: '#16',
+        team: 'Scuderia Ferrari HP',
+        nat: 'MONACO',
+        dob: '16 OCT 1997',
+        titles: '0',
+        teamsCount: '2',
+        img: 'https://lh3.googleusercontent.com/aida/ALJJyrBr3UD0hhi6IKyLjIokynvBT5WsNKqIFCXRafJTukLlAzHq-EKB1b65ETFeZFmx4BTgMevLExefuLcCRAuwwK1m0TyENdDAWdmhrdMj88dGZ_Thb9Eb_rxAo3e-aO15IZXUbd-F2ICNIbLICDIap-4lsIDBn7HFUvLl_UKXhde4fPtuRSF76E8gyM6QpThGESAIDYMDLkIVpYWuZqlOo6OYiX3th3MPnoxEDVLDyQlO8ZT7pTeqqpn9LA',
+        bio: 'Monegasque Ferrari Academy graduate renowned for explosive one-lap qualifying pace and wheel-to-wheel precision, leading Scuderia Ferrari HP into 2025.',
+        teams: [
+          { name: 'Alfa Romeo Sauber', years: '2018' },
+          { name: 'Scuderia Ferrari HP', years: '2019–Present' }
+        ],
+        timeline: [
+          { year: '2018', title: 'Formula 1 Debut with Sauber', detail: 'Impressed immediately in his rookie campaign, earning promotion to Ferrari for 2019.' },
+          { year: '2019', title: 'Maiden Ferrari Victories', detail: 'Claimed back-to-back wins at Spa-Francorchamps and Monza in front of the Tifosi.' },
+          { year: '2024', title: 'Home Victory in Monaco', detail: 'Broke his home-race hoodoo with a commanding pole-to-flag victory on the streets of Monte Carlo.' }
+        ]
+      },
+      NOR: {
+        name: 'Lando Norris',
+        num: '#4',
+        team: 'McLaren Formula 1 Team',
+        nat: 'UNITED KINGDOM',
+        dob: '13 NOV 1999',
+        titles: '0',
+        teamsCount: '1',
+        img: 'https://lh3.googleusercontent.com/aida/ALJJyrBuFTOHqAJDEEx1vZ607fAP1S0o7VvvzW0qjJTE_62h5xMnPZ3o8ax8RXjFKw-sdyBbIzU1_y785ylizB2jcQZV2V1EQ734ybzCi5r9_LQrMI6VzJO6nHQVd5Ju9-HHeELhi8tKn0b9TEpG7fEeTwtdGpj-dgqjeTERZecOMWqld_i_HOMbe2kllPVXzBSdLsdbBNj8uHcudIXt3_dMiNvTii3dwsKcWNQ7btbtZKNuQfS58ubw03S7',
+        bio: 'McLaren flagship driver since his 2019 debut, Spearheading Woking’s resurgence to the front of the Formula 1 grid.',
+        teams: [
+          { name: 'McLaren Formula 1 Team', years: '2019–Present' }
+        ],
+        timeline: [
+          { year: '2019', title: 'McLaren Rookie Debut', detail: 'Stepped up from Formula 2 at 19 years old to partner Carlos Sainz at McLaren.' },
+          { year: '2024', title: 'Maiden Victory & Constructors Crown', detail: 'Captured his first Grand Prix win in Miami and helped deliver McLaren’s first Constructors title since 1998.' }
+        ]
+      },
+      VER: {
+        name: 'Max Verstappen',
+        num: '#1',
+        team: 'Oracle Red Bull Racing',
+        nat: 'NETHERLANDS',
+        dob: '30 SEP 1997',
+        titles: '4',
+        teamsCount: '2',
+        img: 'https://lh3.googleusercontent.com/aida/ALJJyrDD4lSqaLrgyMHAj3rmwDBpUlFfXM7Lv5mltlXkNNZrwolgKdiuwX8vEvXhJRf1DCjC5oT9eIUervzStQiqNp8LaOpQtMOpjiFRthtXSXUBlOgzQb340LEn76UJEsB92msZ_RNspsL-q9qa1JM6Yj-yWngkCRmqJl8Xr2ZdEJezQ-RWvg8htUx9TMesLUclJKTNpGiaBo32T485KYPKpvayyRJ0_Kj5KVTtkgY9-l0u_e_ICiNCElyrijM6Gg',
+        bio: 'Four-time consecutive FIA Formula One World Champion (2021–2024), defending his crown with Oracle Red Bull Racing in 2025.',
+        teams: [
+          { name: 'Scuderia Toro Rosso', years: '2015–2016' },
+          { name: 'Oracle Red Bull Racing', years: '2016–Present' }
+        ],
+        timeline: [
+          { year: '2015', title: 'Youngest Ever F1 Starter', detail: 'Debuted in Australia at 17 years old with Scuderia Toro Rosso.' },
+          { year: '2016', title: 'Youngest Grand Prix Winner', detail: 'Won on his Red Bull Racing debut in Barcelona at age 18.' },
+          { year: '2021–2024', title: 'Four Consecutive World Titles', detail: 'Captured four straight Drivers Championships, including a record-breaking 19 wins in 2023.' }
+        ]
+      }
+    };
+
+    function loadProfile(code) {
+      const p = profiles[code] || profiles.HAM;
+      document.getElementById('prof-img').src = p.img;
+      document.getElementById('prof-img').alt = p.name + ' documentary portrait';
+      document.getElementById('prof-num-badge').textContent = p.num;
+      document.getElementById('prof-team-badge').textContent = p.team;
+      document.getElementById('prof-nat').textContent = p.nat;
+      document.getElementById('prof-name').textContent = p.name;
+      document.getElementById('prof-bio').textContent = p.bio;
+      document.getElementById('prof-titles').textContent = p.titles;
+      document.getElementById('prof-dob').textContent = p.dob;
+      document.getElementById('prof-teams-count').textContent = p.teamsCount;
+
+      const tl = document.getElementById('prof-timeline');
+      tl.innerHTML = '';
+      p.timeline.forEach(item => {
+        const div = document.createElement('article');
+        div.className = 'bg-dark-surface-container border border-dark-outline-variant rounded-md p-gutter-lg';
+        div.innerHTML = `
+          <span class="font-mono text-mono-md text-dark-primary tabular-nums">${item.year}</span>
+          <h3 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs">${item.title}</h3>
+          <p class="font-body text-body-md text-dark-on-surface-variant mt-gutter-xs">${item.detail}</p>
+        `;
+        tl.appendChild(div);
+      });
+
+      const teamsEl = document.getElementById('prof-teams-list');
+      teamsEl.innerHTML = '';
+      p.teams.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'p-gutter-lg flex items-center justify-between gap-gutter-md';
+        row.innerHTML = `
+          <span class="font-headline text-title-md text-dark-on-surface">${t.name}</span>
+          <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums">${t.years}</span>
+        `;
+        teamsEl.appendChild(row);
+      });
+
+      document.querySelectorAll('.profile-switch-btn').forEach(btn => {
+        const isMatch = btn.getAttribute('data-code') === (profiles[code] ? code : 'HAM');
+        btn.className = isMatch
+          ? 'profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-mono text-mono-md'
+          : 'profile-switch-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-mono text-mono-md';
+      });
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    loadProfile(params.get('driver') || 'HAM');
+
+    document.querySelectorAll('.profile-switch-btn').forEach(btn => {
+      btn.addEventListener('click', () => loadProfile(btn.getAttribute('data-code')));
+    });
+  </script>
+
+
+</body></html>

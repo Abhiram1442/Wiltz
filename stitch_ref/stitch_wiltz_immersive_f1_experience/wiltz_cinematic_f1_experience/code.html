@@ -1,0 +1,732 @@
+<!DOCTYPE html><html lang="en" class="dark scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WILTZ — Immersive Formula 1 Experience</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#E10600',
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
+        'dark-primary': '#FF5540',
+        'dark-on-primary': '#2A0200',
+        'dark-primary-container': '#E10600',
+        'dark-on-primary-container': '#FFFFFF',
+        'dark-secondary': '#A1A8B3',
+        'dark-on-secondary': '#14171F',
+        'dark-secondary-container': '#242936',
+        'dark-on-secondary-container': '#F4F6F8',
+        'dark-tertiary': '#38BDF8',
+        'dark-on-tertiary': '#082F49',
+        'dark-background': '#0D0F14',
+        'dark-on-background': '#F4F6F8',
+        'dark-surface': '#0D0F14',
+        'dark-on-surface': '#F4F6F8',
+        'dark-surface-container-lowest': '#08090C',
+        'dark-surface-container-low': '#14171F',
+        'dark-surface-container': '#1B1F29',
+        'dark-surface-container-high': '#242936',
+        'dark-surface-container-highest': '#2D3342',
+        'dark-on-surface-variant': '#A1A8B3',
+        'dark-outline': '#4B5263',
+        'dark-outline-variant': '#262B38',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Archivo"', 'sans-serif'],
+        'headline': ['"Archivo"', 'sans-serif'],
+        'title': ['"Archivo"', 'sans-serif'],
+        'body': ['"Commissioner"', 'sans-serif'],
+        'label': ['"Archivo"', 'sans-serif'],
+        'mono': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['72px', { lineHeight: '76px', letterSpacing: '-1.5px', fontWeight: '900' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-0.75px', fontWeight: '900' }],
+        'display-lg': ['52px', { lineHeight: '56px', letterSpacing: '-1px', fontWeight: '800' }],
+        'display-lg-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '800' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.75px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.75px', fontWeight: '600' }],
+        'mono-lg': ['20px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&amp;family=Commissioner:wght@400;500;600&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    .material-symbols-outlined {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+    @keyframes scanlineSweep {
+      0% { transform: translateY(-100%); opacity: 0; }
+      50% { opacity: 0.25; }
+      100% { transform: translateY(100%); opacity: 0; }
+    }
+    .telemetry-sweep {
+      animation: scanlineSweep 7s linear infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .telemetry-sweep { animation: none; opacity: 0; }
+    }
+  </style>
+</head>
+<body class="bg-dark-surface text-dark-on-surface font-body antialiased selection:bg-dark-primary-container selection:text-dark-on-primary-container">
+
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Broadcast Header -->
+    <header class="sticky top-0 z-50 bg-dark-surface/85 backdrop-blur-md border-b border-dark-outline-variant">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin h-16 flex items-center justify-between gap-gutter-lg">
+        <a href="#top" class="flex items-center gap-gutter-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary rounded-sm">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+            <path d="M2 18L10 2H16L8 18H2Z" fill="#E10600"></path>
+            <path d="M12 18L20 2H26L18 18H12Z" fill="#F4F6F8"></path>
+          </svg>
+          <span class="font-display text-title-lg tracking-wider uppercase text-dark-on-surface" data-design-text-token="title-lg">WILTZ</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-gutter-lg">
+          <a href="#top" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface border-b-2 border-accent py-gutter-xs" data-design-text-token="label-lg">Home</a>
+          <a href="#live" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Live</a>
+          <a href="#schedule" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Schedule</a>
+          <a href="#results" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Results</a>
+          <a href="#drivers" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Drivers</a>
+          <a href="#teams" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Teams</a>
+          <a href="#circuits" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Circuits</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <span class="hidden sm:inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-dark-surface-container border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant">
+            <span class="w-2 h-2 rounded-full bg-success" aria-hidden="true"></span>
+            <span data-design-text-token="label-sm">2025 ARCHIVE</span>
+          </span>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant rounded-sm">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Nav Drawer -->
+      <div id="mobile-nav" class="hidden lg:hidden border-t border-dark-outline-variant bg-dark-surface-container-low px-gutter-md py-gutter-md">
+        <div class="grid grid-cols-2 gap-gutter-sm">
+          <a href="#top" class="font-label text-label-lg uppercase text-dark-on-surface py-gutter-xs">Home</a>
+          <a href="#live" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Live</a>
+          <a href="#schedule" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Schedule</a>
+          <a href="#results" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Results</a>
+          <a href="#drivers" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Drivers</a>
+          <a href="#teams" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Teams</a>
+          <a href="#circuits" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Circuits</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="flex-1">
+
+      <!-- SECTION 1: FULL-SCREEN CINEMATIC 3D F1 HERO -->
+      <section class="relative min-h-[760px] bg-dark-surface-container-lowest overflow-hidden border-b border-dark-outline-variant flex items-center">
+        <!-- Subtle Carbon Grid Backdrop -->
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(to right, #262B38 1px, transparent 1px), linear-gradient(to bottom, #262B38 1px, transparent 1px); background-size: 48px 48px;"></div>
+        <!-- Dramatic Radial Studio Spotlight -->
+        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 65% 48%, rgba(225, 6, 0, 0.16) 0%, rgba(13, 15, 20, 0.85) 55%, #08090C 100%);"></div>
+        <div class="telemetry-sweep absolute inset-x-0 h-32 pointer-events-none" style="background: linear-gradient(to bottom, transparent, rgba(225,6,0,0.08), transparent);"></div>
+
+        <!-- Interactive Three.js 3D F1 Car Canvas -->
+        <div id="f1-hero-canvas" class="absolute inset-0 w-full min-h-[760px] cursor-grab active:cursor-grabbing" aria-label="Interactive 3D Formula 1 Car Showcase"></div>
+
+        <!-- Hero Content Overlay -->
+        <div class="relative z-10 max-w-7xl mx-auto w-full px-gutter-md md:px-page-margin py-section pointer-events-none">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl items-end">
+            <div class="lg:col-span-6 flex flex-col gap-gutter-lg pointer-events-auto bg-dark-surface-container-lowest/70 backdrop-blur-sm p-gutter-lg rounded-md border border-dark-outline-variant/60">
+              <div class="flex flex-wrap items-center gap-gutter-sm">
+                <!-- COMPONENT: badge-status -->
+                <span data-component-id="badge-status" data-component-type="badge" data-component-variant="status" role="status" class="inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider">
+                  <span data-design-text-token="label-sm">2025 FIA World Championship</span>
+                </span>
+                <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">24 ROUNDS</span>
+              </div>
+
+              <h1 class="font-display text-display-xl-mobile md:text-display-xl uppercase tracking-tight text-dark-on-surface text-balance" data-design-text-token="display-xl">
+                Beyond The Apex
+              </h1>
+
+              <p class="font-body text-body-lg text-dark-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+                Command the pit wall. Explore interactive 3D aerodynamics, verified 2025 FIA championship telemetry, circuit dossiers, and constructor engineering in real time.
+              </p>
+
+              <div class="flex flex-wrap items-center gap-gutter-md pt-gutter-sm">
+                <!-- COMPONENT: button-with-icon -->
+                <a href="#live" data-component-id="button-with-icon" data-component-type="button" data-component-variant="with-icon" class="inline-flex items-center justify-center gap-gutter-sm bg-dark-primary-container text-dark-on-primary-container px-gutter-lg py-gutter-md rounded-sm font-label text-label-lg uppercase tracking-wider transition-transform duration-state-change ease-state-change hover:opacity-90 active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+                  <span class="material-symbols-outlined text-title-md" aria-hidden="true">sensors</span>
+                  <span data-design-text-token="label-lg">Open Live Board</span>
+                </a>
+
+                <!-- COMPONENT: button-secondary -->
+                <a href="#schedule" data-component-id="button-secondary" data-component-type="button" data-component-variant="secondary" class="inline-flex items-center justify-center gap-gutter-sm bg-dark-surface-container-high/90 backdrop-blur-md text-dark-on-surface border border-dark-outline-variant px-gutter-lg py-gutter-md rounded-sm font-label text-label-lg uppercase tracking-wider transition-colors duration-state-change ease-state-change hover:bg-dark-surface-container-highest focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+                  <span data-design-text-token="label-lg">2025 Race Calendar</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- 3D Camera & Telemetry Controls HUD -->
+            <div class="lg:col-span-6 flex flex-col items-start lg:items-end justify-end gap-gutter-md pointer-events-auto">
+              <div class="bg-dark-surface-container/85 backdrop-blur-md border border-dark-outline-variant rounded-md p-gutter-md flex flex-wrap items-center gap-gutter-sm">
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-on-surface-variant mr-gutter-xs" data-design-text-token="label-sm">3D Camera</span>
+                <button type="button" data-cam="hero" class="cam-preset-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider transition-colors duration-state-change">3/4 Hero</button>
+                <button type="button" data-cam="front" class="cam-preset-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-highest transition-colors duration-state-change">Front Aero</button>
+                <button type="button" data-cam="top" class="cam-preset-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-highest transition-colors duration-state-change">Top Down</button>
+                <button id="toggle-rotate-btn" type="button" aria-label="Toggle 3D car rotation" class="inline-flex items-center justify-center w-8 h-8 rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant hover:bg-dark-surface-container-highest transition-colors duration-state-change">
+                  <span class="material-symbols-outlined text-title-md" aria-hidden="true">pause</span>
+                </button>
+              </div>
+              <p class="bg-dark-surface-container-lowest/85 backdrop-blur-md border border-dark-outline-variant px-gutter-sm py-gutter-xs rounded-sm font-mono text-mono-md text-dark-on-surface-variant" data-design-text-token="mono-md">DRAG TO ORBIT CHASSIS · 798 KG MIN WEIGHT · 1.6L V6 TURBO HYBRID</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: FEATURED GRAND PRIX -->
+      <section id="circuits" class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section border-b border-dark-outline-variant">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter-md mb-gutter-xl">
+          <div>
+            <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">Featured Grand Prix</span>
+            <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-lg">Silverstone Circuit — Great Britain</h2>
+          </div>
+          <a href="#schedule" class="inline-flex items-center gap-gutter-xs font-label text-label-lg uppercase tracking-wider text-dark-on-surface hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Circuit Dossier</span>
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="relative rounded-lg overflow-hidden border border-dark-outline-variant bg-dark-surface-container">
+          <img src="https://lh3.googleusercontent.com/aida/ALJJyrBN0B44zOe8fqd7J4J72cEgg3FUwax5PSynPqr4VbNd9OiQX79jIf2eP0M7_GZxCClDpxQ2llPtPLmj2CLsJIogaM8-eu1H5P8vaxpAYj0ztCDiWsayjsj0cXcbb78RHOQJR83cVKS0m4Ok6YsD7acmWRkOsnXRuxsiVh0vrWTS-xscOTbvThzhK7WLaAo1I0jbRfyUUCHmj4pAIRCM6RURL8NiwFt-f_YITTdacKdBNL1lFrIXG_3722emzw28GBOZEQ" alt="Silverstone Formula 1 Circuit under dramatic dusk floodlights" class="w-full h-[420px] object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-dark-surface-container-lowest via-dark-surface-container-lowest/75 to-transparent"></div>
+          <div class="relative md:absolute md:inset-x-0 md:bottom-0 p-gutter-lg md:p-gutter-xl grid grid-cols-2 md:grid-cols-5 gap-gutter-lg items-end bg-dark-surface-container-lowest/80 md:bg-transparent">
+            <div>
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Circuit Length</span>
+              <p class="font-mono text-mono-lg text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">5.891 km</p>
+            </div>
+            <div>
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Race Laps</span>
+              <p class="font-mono text-mono-lg text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">52 Laps</p>
+            </div>
+            <div>
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Corners</span>
+              <p class="font-mono text-mono-lg text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">18 Turns</p>
+            </div>
+            <div>
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Race Distance</span>
+              <p class="font-mono text-mono-lg text-dark-on-surface tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">306.198 km</p>
+            </div>
+            <div class="col-span-2 md:col-span-1">
+              <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">Lap Record (VER, 2020)</span>
+              <p class="font-mono text-mono-lg text-dark-primary tabular-nums mt-gutter-xs" data-design-text-token="mono-lg">1:27.097</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: FEATURED DRIVERS (2025 GRID) -->
+      <section id="drivers" class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section border-b border-dark-outline-variant">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter-md mb-gutter-xl">
+          <div>
+            <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">2025 FIA Driver Lineup</span>
+            <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-lg">Championship Contenders</h2>
+          </div>
+          <a href="#drivers" class="inline-flex items-center gap-gutter-xs font-label text-label-lg uppercase tracking-wider text-dark-on-surface hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">Full 2025 Grid</span>
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-lg items-stretch">
+          <!-- Driver 1: Lando Norris -->
+          <a href="#drivers" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="group bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col h-full transition-transform duration-surface-enter ease-surface-enter hover:-translate-y-1 hover:border-dark-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+            <div class="relative overflow-hidden">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrDkCHAx7Ey1iDcr-3yciQxNxdzETRgVd7YU6fSW4o_BGhGiwkLcxXwgtBXoWsfZeLmTji7WMbstxwE0dcgPEWBRVVqMMOHRzFHIG1jyRX1Dkre-tsmk-kf9R_oI6mZvltxNcq72u4taZFBsgTDt3oEctZTPdnMWT0LfvLcZckXAZmF5fa-S_9hqSDxjY70qV70c37faTcxvECFfJlqG57kkufllzUGzIQOHxxHiI5tj8Kpt2WgS6T5V" alt="Lando Norris studio portrait" class="w-full h-72 object-cover transition-transform duration-surface-enter group-hover:scale-105">
+              <span class="absolute top-gutter-md right-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-lg text-dark-on-surface tabular-nums border border-dark-outline-variant" data-design-text-token="mono-lg">#4</span>
+            </div>
+            <div class="p-gutter-lg flex-1 flex flex-col justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-warning" data-design-text-token="label-sm">McLaren Formula 1 Team</span>
+                <h3 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs" data-design-text-token="title-lg">Lando Norris</h3>
+              </div>
+              <div class="pt-gutter-md border-t border-dark-outline-variant flex items-center justify-between">
+                <span class="font-label text-label-sm text-dark-on-surface-variant uppercase" data-design-text-token="label-sm">United Kingdom</span>
+                <span class="material-symbols-outlined text-title-md text-dark-on-surface-variant group-hover:text-dark-on-surface transition-colors" aria-hidden="true">north_east</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Driver 2: Charles Leclerc -->
+          <a href="#drivers" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="group bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col h-full transition-transform duration-surface-enter ease-surface-enter hover:-translate-y-1 hover:border-dark-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+            <div class="relative overflow-hidden">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrA2xLgXt4RM6VnwE6fbY2G-vIvkLm3o4uk1_rWsb4ZPMMfShMcE6expr-8A1l666mux26n8qZffVADHdCPnROjlQlYSkSQ-3yCP64OXYH8C027aEHPlC04rn7ALmCaoK3l56wyOQTx2qoFNJV3UbIig0hGv4hqMThBPmMJAjjeJ9qIpEoyNhmi3AK0rmzYFfIYUlhIAxcroyL_gRepCk19QEa-yPgO1AaMMi4-r-mb0f-bONmrDLfoowg" alt="Charles Leclerc studio portrait" class="w-full h-72 object-cover transition-transform duration-surface-enter group-hover:scale-105">
+              <span class="absolute top-gutter-md right-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-lg text-dark-primary tabular-nums border border-dark-outline-variant" data-design-text-token="mono-lg">#16</span>
+            </div>
+            <div class="p-gutter-lg flex-1 flex flex-col justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-primary" data-design-text-token="label-sm">Scuderia Ferrari HP</span>
+                <h3 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs" data-design-text-token="title-lg">Charles Leclerc</h3>
+              </div>
+              <div class="pt-gutter-md border-t border-dark-outline-variant flex items-center justify-between">
+                <span class="font-label text-label-sm text-dark-on-surface-variant uppercase" data-design-text-token="label-sm">Monaco</span>
+                <span class="material-symbols-outlined text-title-md text-dark-on-surface-variant group-hover:text-dark-on-surface transition-colors" aria-hidden="true">north_east</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Driver 3: Max Verstappen -->
+          <a href="#drivers" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="group bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col h-full transition-transform duration-surface-enter ease-surface-enter hover:-translate-y-1 hover:border-dark-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+            <div class="relative overflow-hidden">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrDD4lSqaLrgyMHAj3rmwDBpUlFfXM7Lv5mltlXkNNZrwolgKdiuwX8vEvXhJRf1DCjC5oT9eIUervzStQiqNp8LaOpQtMOpjiFRthtXSXUBlOgzQb340LEn76UJEsB92msZ_RNspsL-q9qa1JM6Yj-yWngkCRmqJl8Xr2ZdEJezQ-RWvg8htUx9TMesLUclJKTNpGiaBo32T485KYPKpvayyRJ0_Kj5KVTtkgY9-l0u_e_ICiNCElyrijM6Gg" alt="Max Verstappen studio portrait" class="w-full h-72 object-cover transition-transform duration-surface-enter group-hover:scale-105">
+              <span class="absolute top-gutter-md right-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-lg text-dark-tertiary tabular-nums border border-dark-outline-variant" data-design-text-token="mono-lg">#1</span>
+            </div>
+            <div class="p-gutter-lg flex-1 flex flex-col justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-tertiary" data-design-text-token="label-sm">Oracle Red Bull Racing</span>
+                <h3 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs" data-design-text-token="title-lg">Max Verstappen</h3>
+              </div>
+              <div class="pt-gutter-md border-t border-dark-outline-variant flex items-center justify-between">
+                <span class="font-label text-label-sm text-dark-on-surface-variant uppercase" data-design-text-token="label-sm">Netherlands</span>
+                <span class="material-symbols-outlined text-title-md text-dark-on-surface-variant group-hover:text-dark-on-surface transition-colors" aria-hidden="true">north_east</span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Driver 4: Lewis Hamilton -->
+          <a href="#drivers" data-component-id="card-interactive" data-component-type="card" data-component-variant="interactive" class="group bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col h-full transition-transform duration-surface-enter ease-surface-enter hover:-translate-y-1 hover:border-dark-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+            <div class="relative overflow-hidden">
+              <img src="https://lh3.googleusercontent.com/aida/ALJJyrAdxKN2bwKXLVo4exCG_JNFYeE89K1pHuMgR4WdbcRV5WtJ_KKryO6JGUoq-WICdRE1Pn95EK-5s2BIphuOtAlWuly-nY5-kYQcWVXo0IBp7bpaGheyUEG9vgkwKTtKCYIplVzM83ekpNv9znCn53YPfmor4jecy8Nb3Vl33QoI8AR1O8CB586jYrj5eOgU5oDmqGToL-6GJV7zKwCk5s08RtSgPt0r177l50Lfr860bvdnN4hhfzOsNrI" alt="Lewis Hamilton studio portrait" class="w-full h-72 object-cover transition-transform duration-surface-enter group-hover:scale-105">
+              <span class="absolute top-gutter-md right-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-lg text-dark-primary tabular-nums border border-dark-outline-variant" data-design-text-token="mono-lg">#44</span>
+            </div>
+            <div class="p-gutter-lg flex-1 flex flex-col justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-primary" data-design-text-token="label-sm">Scuderia Ferrari HP</span>
+                <h3 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs" data-design-text-token="title-lg">Lewis Hamilton</h3>
+              </div>
+              <div class="pt-gutter-md border-t border-dark-outline-variant flex items-center justify-between">
+                <span class="font-label text-label-sm text-dark-on-surface-variant uppercase" data-design-text-token="label-sm">United Kingdom</span>
+                <span class="material-symbols-outlined text-title-md text-dark-on-surface-variant group-hover:text-dark-on-surface transition-colors" aria-hidden="true">north_east</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- SECTION 4: CONSTRUCTOR HIGHLIGHTS -->
+      <section id="teams" class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section border-b border-dark-outline-variant">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter-md mb-gutter-xl">
+          <div>
+            <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">Constructors Portal</span>
+            <h2 class="font-headline text-headline-lg-mobile md:text-headline-lg text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-lg">2025 Engineering Works</h2>
+          </div>
+          <a href="#teams" class="inline-flex items-center gap-gutter-xs font-label text-label-lg uppercase tracking-wider text-dark-on-surface hover:text-dark-primary transition-colors duration-state-change">
+            <span data-design-text-token="label-lg">All 10 Constructors</span>
+            <span class="material-symbols-outlined text-title-md" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter-lg">
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrBHtTlG6lS-uD9lW1ZWHLDLQXHFeQK3Q7B9pXaK-nKoXel7coSLh3AsVBdXWfCQLHz0mnm7nst23QNzPsfLLOiTWrZ5TRcDJReqSuhhh4XIYXWI07mizQbylubGc21dEpcn-t-KPYWyQsQ3he0siTOcNSqP69N2zTcTobRj-u8ykINUcRcEmY1gFcq2PZKJ4LQLl8Mg94xHmt3pENQM98Vv0MyU756koufwlvLpI5prIsPiWoVvlzn3zGMcfBnJdE-kNQ" alt="McLaren Formula 1 challenger in dark studio lighting" class="w-full h-64 object-cover">
+            <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-warning" data-design-text-token="label-sm">Woking, United Kingdom</span>
+                <h3 class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-md">McLaren Formula 1 Team</h3>
+                <p class="font-body text-body-md text-dark-on-surface-variant mt-gutter-xs" data-design-text-token="body-md">Lando Norris (#4) · Oscar Piastri (#81) · Mercedes Power Unit</p>
+              </div>
+              <span class="font-mono text-mono-lg text-dark-on-surface tabular-nums shrink-0" data-design-text-token="mono-lg">MCL39</span>
+            </div>
+          </article>
+
+          <article data-component-id="card-elevated" data-component-type="card" data-component-variant="elevated" class="bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col">
+            <img src="https://lh3.googleusercontent.com/aida/ALJJyrCCv61ya2dofXrLWE6hyiiBaYTk_d5KlyYegtdcZOqHBD5D3HLlkXg4TSRrgv1gbTYrrrL0wWfON8ksIA45opgu7N2OWKyc2Hi0whcQIjIZ6gJxgAo9eXdaZ0FHXdwQVyrMdWhjR4smKKi8nY-HyGh08IYdRtvOZIffwZhlm4h2N5jtIn-me2tUsI8sElQWPOllrD2LHIFjblvzZe0UHbTGS1RRES0Bh73CiKK-oTxrkCpRckmOE5Pvw1va4CsUgDMzxw" alt="Scuderia Ferrari Formula 1 challenger in dark wind tunnel" class="w-full h-64 object-cover">
+            <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-primary" data-design-text-token="label-sm">Maranello, Italy</span>
+                <h3 class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-md">Scuderia Ferrari HP</h3>
+                <p class="font-body text-body-md text-dark-on-surface-variant mt-gutter-xs" data-design-text-token="body-md">Charles Leclerc (#16) · Lewis Hamilton (#44) · Ferrari Power Unit</p>
+              </div>
+              <span class="font-mono text-mono-lg text-dark-primary tabular-nums shrink-0" data-design-text-token="mono-lg">SF-25</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SECTION 5: CALENDAR PREVIEW & LATEST RESULTS -->
+      <section id="schedule" class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter-xl">
+
+          <!-- Race Calendar Preview -->
+          <div class="lg:col-span-7 flex flex-col gap-gutter-lg">
+            <div class="flex items-end justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">2025 FIA Calendar</span>
+                <h2 class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-md">Key Championship Rounds</h2>
+              </div>
+              <a href="#schedule" class="font-label text-label-sm uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface shrink-0" data-design-text-token="label-sm">Full Schedule</a>
+            </div>
+
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-md divide-y divide-dark-outline-variant">
+              <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+                <div class="flex items-center gap-gutter-md">
+                  <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">R01</span>
+                  <div>
+                    <h3 class="font-headline text-title-md text-dark-on-surface text-balance" data-design-text-token="title-md">Australian Grand Prix</h3>
+                    <p class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Albert Park Circuit · Melbourne</p>
+                  </div>
+                </div>
+                <span class="font-mono text-mono-md text-dark-on-surface tabular-nums shrink-0" data-design-text-token="mono-md">14–16 MAR 2025</span>
+              </div>
+
+              <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+                <div class="flex items-center gap-gutter-md">
+                  <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">R08</span>
+                  <div>
+                    <h3 class="font-headline text-title-md text-dark-on-surface text-balance" data-design-text-token="title-md">Monaco Grand Prix</h3>
+                    <p class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Circuit de Monaco · Monte Carlo</p>
+                  </div>
+                </div>
+                <span class="font-mono text-mono-md text-dark-on-surface tabular-nums shrink-0" data-design-text-token="mono-md">23–25 MAY 2025</span>
+              </div>
+
+              <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+                <div class="flex items-center gap-gutter-md">
+                  <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">R12</span>
+                  <div>
+                    <h3 class="font-headline text-title-md text-dark-on-surface text-balance" data-design-text-token="title-md">British Grand Prix</h3>
+                    <p class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Silverstone Circuit · Towcester</p>
+                  </div>
+                </div>
+                <span class="font-mono text-mono-md text-dark-on-surface tabular-nums shrink-0" data-design-text-token="mono-md">04–06 JUL 2025</span>
+              </div>
+
+              <div class="p-gutter-lg flex items-center justify-between gap-gutter-md">
+                <div class="flex items-center gap-gutter-md">
+                  <span class="font-mono text-mono-md text-dark-on-surface-variant tabular-nums" data-design-text-token="mono-md">R24</span>
+                  <div>
+                    <h3 class="font-headline text-title-md text-dark-on-surface text-balance" data-design-text-token="title-md">Abu Dhabi Grand Prix</h3>
+                    <p class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Yas Marina Circuit · Yas Island</p>
+                  </div>
+                </div>
+                <span class="font-mono text-mono-md text-dark-on-surface tabular-nums shrink-0" data-design-text-token="mono-md">05–07 DEC 2025</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Latest Race Results / Telemetry Feed -->
+          <div id="results" class="lg:col-span-5 flex flex-col gap-gutter-lg">
+            <div class="flex items-end justify-between gap-gutter-md">
+              <div>
+                <span class="font-label text-label-sm uppercase tracking-widest text-dark-primary" data-design-text-token="label-sm">Race Control Feed</span>
+                <h2 class="font-headline text-headline-md text-dark-on-surface mt-gutter-xs text-balance" data-design-text-token="headline-md">2025 Results &amp; Standings</h2>
+              </div>
+              <span class="font-label text-label-sm uppercase tracking-wider text-dark-on-surface-variant shrink-0" data-design-text-token="label-sm">Supabase Ready</span>
+            </div>
+
+            <div class="bg-dark-surface-container border border-dark-outline-variant rounded-md p-gutter-lg flex flex-col justify-between gap-gutter-lg h-full">
+              <div class="flex flex-col gap-gutter-md">
+                <div class="flex items-center justify-between pb-gutter-md border-b border-dark-outline-variant">
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface-variant" data-design-text-token="label-sm">2025 Season Data Source</span>
+                  <span class="inline-flex items-center gap-gutter-xs font-mono text-mono-md text-warning shrink-0" data-design-text-token="mono-md">AWAITING DB SYNC</span>
+                </div>
+                <p class="font-body text-body-md text-dark-on-surface-variant text-pretty" data-design-text-token="body-md">
+                  WILTZ connects directly to your Supabase championship tables for verified 2025 Grand Prix classification, fastest laps, and constructor points without synthetic race data.
+                </p>
+              </div>
+
+              <div id="live" class="bg-dark-surface-container-low border border-dark-outline-variant rounded-sm p-gutter-md flex items-center justify-between gap-gutter-md">
+                <div>
+                  <span class="font-label text-label-sm uppercase text-dark-on-surface" data-design-text-token="label-sm">Next Phase: Live Race Board</span>
+                  <p class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Sector timing, tyre compounds, and pit-wall telemetry.</p>
+                </div>
+                <span class="material-symbols-outlined text-headline-md text-dark-primary" aria-hidden="true">speed</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-outline-variant bg-dark-surface-container-lowest">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl flex flex-col sm:flex-row items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="font-display text-title-md uppercase tracking-wider text-dark-on-surface" data-design-text-token="title-md">WILTZ</span>
+          <span class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Formula 1 Digital Experience · 2025 FIA Season</span>
+        </div>
+        <span class="font-mono text-mono-md text-dark-on-surface-variant" data-design-text-token="mono-md">TELEMETRY PRECISION · PHASE 01</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (menuBtn && mobileNav) {
+      menuBtn.addEventListener('click', () => {
+        mobileNav.classList.toggle('hidden');
+      });
+    }
+
+    // Three.js Procedural 3D Formula 1 Car Showcase
+    (function initF1Showcase() {
+      const container = document.getElementById('f1-hero-canvas');
+      if (!container || typeof THREE === 'undefined') return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let autoRotate = !prefersReducedMotion;
+
+      const scene = new THREE.Scene();
+      const width = container.clientWidth || 1280;
+      const height = container.clientHeight || 760;
+
+      const camera = new THREE.PerspectiveCamera(36, width / height, 0.1, 100);
+      const targetCamPos = new THREE.Vector3(5.2, 1.9, 5.4);
+      camera.position.copy(targetCamPos);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      container.appendChild(renderer.domElement);
+
+      // Studio Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.55);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+      keyLight.position.set(6, 10, 6);
+      scene.add(keyLight);
+
+      const redRimLight = new THREE.PointLight(0xe10600, 3.2, 18);
+      redRimLight.position.set(-4.5, 2.2, -3.5);
+      scene.add(redRimLight);
+
+      const coolRimLight = new THREE.DirectionalLight(0x38bdf8, 0.7);
+      coolRimLight.position.set(-6, 4, 4);
+      scene.add(coolRimLight);
+
+      // Car Group
+      const carGroup = new THREE.Group();
+      carGroup.position.set(1.2, -0.35, 0);
+
+      const redPaint = new THREE.MeshStandardMaterial({ color: 0xe10600, metalness: 0.65, roughness: 0.25 });
+      const carbonMat = new THREE.MeshStandardMaterial({ color: 0x181b22, metalness: 0.4, roughness: 0.55 });
+      const tireMat = new THREE.MeshStandardMaterial({ color: 0x111317, metalness: 0.1, roughness: 0.85 });
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xd1d5db, metalness: 0.85, roughness: 0.2 });
+
+      // Floor / Venturi Underbody
+      const floor = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.06, 4.4), carbonMat);
+      floor.position.set(0, 0.16, 0);
+      carGroup.add(floor);
+
+      // Monocoque Chassis & Nose Cone
+      const chassis = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.42, 2.6), redPaint);
+      chassis.position.set(0, 0.42, -0.1);
+      carGroup.add(chassis);
+
+      const nose = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.22, 1.45), redPaint);
+      nose.position.set(0, 0.34, 1.8);
+      nose.rotation.x = 0.09;
+      carGroup.add(nose);
+
+      // Sidepods
+      [-0.58, 0.58].forEach(x => {
+        const pod = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.38, 1.9), redPaint);
+        pod.position.set(x, 0.40, -0.15);
+        carGroup.add(pod);
+      });
+
+      // Engine Cover & Shark Fin
+      const engineCover = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.48, 1.4), redPaint);
+      engineCover.position.set(0, 0.68, -0.9);
+      carGroup.add(engineCover);
+
+      const sharkFin = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.42, 1.1), carbonMat);
+      sharkFin.position.set(0, 0.92, -1.25);
+      carGroup.add(sharkFin);
+
+      // Halo Cockpit Protection
+      const halo = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.035, 10, 24, Math.PI), carbonMat);
+      halo.rotation.x = Math.PI / 2;
+      halo.position.set(0, 0.68, 0.35);
+      carGroup.add(halo);
+
+      // Front Wing Assembly
+      const frontWing = new THREE.Mesh(new THREE.BoxGeometry(2.05, 0.05, 0.55), carbonMat);
+      frontWing.position.set(0, 0.14, 2.45);
+      carGroup.add(frontWing);
+
+      [-1.02, 1.02].forEach(x => {
+        const endplate = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.26, 0.58), redPaint);
+        endplate.position.set(x, 0.24, 2.45);
+        carGroup.add(endplate);
+      });
+
+      // Rear Wing & DRS Flap
+      const rearWingMain = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.06, 0.42), carbonMat);
+      rearWingMain.position.set(0, 0.95, -2.15);
+      carGroup.add(rearWingMain);
+
+      const drsFlap = new THREE.Mesh(new THREE.BoxGeometry(1.12, 0.16, 0.05), redPaint);
+      drsFlap.position.set(0, 1.06, -2.28);
+      drsFlap.rotation.x = -0.35;
+      carGroup.add(drsFlap);
+
+      [-0.58, 0.58].forEach(x => {
+        const rearEndplate = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.48, 0.52), carbonMat);
+        rearEndplate.position.set(x, 0.92, -2.18);
+        carGroup.add(rearEndplate);
+      });
+
+      // 4 Slick Tires
+      const wheelPositions = [
+        [-0.92, 0.34, 1.55],
+        [0.92, 0.34, 1.55],
+        [-0.96, 0.36, -1.55],
+        [0.96, 0.36, -1.55]
+      ];
+      wheelPositions.forEach(([x, y, z], idx) => {
+        const radius = idx < 2 ? 0.34 : 0.36;
+        const widthTire = idx < 2 ? 0.34 : 0.42;
+        const tire = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, widthTire, 28), tireMat);
+        tire.rotation.z = Math.PI / 2;
+        tire.position.set(x, y, z);
+        carGroup.add(tire);
+
+        const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.20, 0.20, widthTire + 0.02, 18), rimMat);
+        rim.rotation.z = Math.PI / 2;
+        rim.position.set(x, y, z);
+        carGroup.add(rim);
+      });
+
+      scene.add(carGroup);
+
+      // Interactive Drag Orbit
+      let isDragging = false;
+      let prevX = 0;
+      container.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        prevX = e.clientX;
+      });
+      window.addEventListener('pointerup', () => { isDragging = false; });
+      window.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - prevX;
+        prevX = e.clientX;
+        carGroup.rotation.y += dx * 0.008;
+      });
+
+      // Camera Presets
+      const presets = {
+        hero: new THREE.Vector3(5.2, 1.9, 5.4),
+        front: new THREE.Vector3(0.4, 1.1, 6.2),
+        top: new THREE.Vector3(0.8, 7.2, 1.2)
+      };
+      document.querySelectorAll('.cam-preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.getAttribute('data-cam');
+          if (presets[key]) targetCamPos.copy(presets[key]);
+          document.querySelectorAll('.cam-preset-btn').forEach(b => {
+            b.className = 'cam-preset-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-highest transition-colors duration-state-change';
+          });
+          btn.className = 'cam-preset-btn px-gutter-sm py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider transition-colors duration-state-change';
+        });
+      });
+
+      // Rotation Toggle
+      const toggleBtn = document.getElementById('toggle-rotate-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          autoRotate = !autoRotate;
+          const icon = toggleBtn.querySelector('.material-symbols-outlined');
+          if (icon) icon.textContent = autoRotate ? 'pause' : 'play_arrow';
+        });
+      }
+
+      // Resize Handler
+      window.addEventListener('resize', () => {
+        const w = container.clientWidth || 1280;
+        const h = container.clientHeight || 760;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      });
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        if (autoRotate && !isDragging) {
+          carGroup.rotation.y += 0.0035;
+        }
+        camera.position.lerp(targetCamPos, 0.06);
+        camera.lookAt(0.6, 0.35, 0);
+        renderer.render(scene, camera);
+      }
+      animate();
+    })();
+  </script>
+
+
+</body></html>

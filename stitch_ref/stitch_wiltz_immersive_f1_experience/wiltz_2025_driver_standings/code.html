@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="en" class="dark scroll-smooth"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WILTZ — 2025 Driver Standings</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'accent': '#E10600',
+        'success': '#10B981',
+        'warning': '#F59E0B',
+        'error': '#EF4444',
+        'dark-primary': '#FF5540',
+        'dark-on-primary': '#2A0200',
+        'dark-primary-container': '#E10600',
+        'dark-on-primary-container': '#FFFFFF',
+        'dark-secondary': '#A1A8B3',
+        'dark-on-secondary': '#14171F',
+        'dark-secondary-container': '#242936',
+        'dark-on-secondary-container': '#F4F6F8',
+        'dark-tertiary': '#38BDF8',
+        'dark-on-tertiary': '#082F49',
+        'dark-background': '#0D0F14',
+        'dark-on-background': '#F4F6F8',
+        'dark-surface': '#0D0F14',
+        'dark-on-surface': '#F4F6F8',
+        'dark-surface-container-lowest': '#08090C',
+        'dark-surface-container-low': '#14171F',
+        'dark-surface-container': '#1B1F29',
+        'dark-surface-container-high': '#242936',
+        'dark-surface-container-highest': '#2D3342',
+        'dark-on-surface-variant': '#A1A8B3',
+        'dark-outline': '#4B5263',
+        'dark-outline-variant': '#262B38',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '24px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '64px',
+        'page-margin': '32px',
+      },
+      fontFamily: {
+        'display': ['"Archivo"', 'sans-serif'],
+        'headline': ['"Archivo"', 'sans-serif'],
+        'title': ['"Archivo"', 'sans-serif'],
+        'body': ['"Commissioner"', 'sans-serif'],
+        'label': ['"Archivo"', 'sans-serif'],
+        'mono': ['"Source Code Pro"', 'monospace'],
+      },
+      fontSize: {
+        'display-xl': ['72px', { lineHeight: '76px', letterSpacing: '-1.5px', fontWeight: '900' }],
+        'display-xl-mobile': ['32px', { lineHeight: '36px', letterSpacing: '-0.75px', fontWeight: '900' }],
+        'display-lg': ['52px', { lineHeight: '56px', letterSpacing: '-1px', fontWeight: '800' }],
+        'display-lg-mobile': ['28px', { lineHeight: '32px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg': ['36px', { lineHeight: '42px', letterSpacing: '-0.5px', fontWeight: '800' }],
+        'headline-lg-mobile': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '800' }],
+        'headline-md': ['24px', { lineHeight: '30px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'title-lg': ['20px', { lineHeight: '26px', letterSpacing: '0px', fontWeight: '700' }],
+        'title-md': ['16px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '600' }],
+        'body-lg': ['18px', { lineHeight: '28px', letterSpacing: '0px', fontWeight: '400' }],
+        'body-md': ['15px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', letterSpacing: '0.75px', fontWeight: '700' }],
+        'label-sm': ['12px', { lineHeight: '16px', letterSpacing: '0.75px', fontWeight: '600' }],
+        'mono-lg': ['20px', { lineHeight: '24px', letterSpacing: '0px', fontWeight: '700' }],
+        'mono-md': ['14px', { lineHeight: '20px', letterSpacing: '0px', fontWeight: '600' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '320ms',
+        'surface-exit': '180ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'cubic-bezier(0.2, 0, 0, 1)',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&amp;family=Commissioner:wght@400;500;600&amp;family=Source+Code+Pro:wght@600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined {
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      line-height: 1 !important;
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-dark-surface text-dark-on-surface font-body antialiased selection:bg-dark-primary-container selection:text-dark-on-primary-container">
+
+  <div class="min-h-[1024px] flex flex-col" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+    <!-- Sticky Broadcast Header (Shell Parity) -->
+    <header class="sticky top-0 z-50 bg-dark-surface/85 backdrop-blur-md border-b border-dark-outline-variant">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin h-16 flex items-center justify-between gap-gutter-lg">
+        <a href="../home/WiltzHome.html" class="flex items-center gap-gutter-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary rounded-sm">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+            <path d="M2 18L10 2H16L8 18H2Z" fill="#E10600"></path>
+            <path d="M12 18L20 2H26L18 18H12Z" fill="#F4F6F8"></path>
+          </svg>
+          <span class="font-display text-title-lg tracking-wider uppercase text-dark-on-surface" data-design-text-token="title-lg">WILTZ</span>
+        </a>
+
+        <nav aria-label="Primary" class="hidden lg:flex items-center gap-gutter-lg">
+          <a href="../home/WiltzHome.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Home</a>
+          <a href="../live/WiltzLiveBoard.html" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Live</a>
+          <a href="../home/WiltzHome.html#schedule" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Schedule</a>
+          <a href="../home/WiltzHome.html#results" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Results</a>
+          <a href="#top" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface border-b-2 border-accent py-gutter-xs" data-design-text-token="label-lg">Drivers</a>
+          <a href="../home/WiltzHome.html#teams" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Teams</a>
+          <a href="../home/WiltzHome.html#circuits" class="font-label text-label-lg uppercase tracking-wider text-dark-on-surface-variant hover:text-dark-on-surface transition-colors duration-state-change py-gutter-xs" data-design-text-token="label-lg">Circuits</a>
+        </nav>
+
+        <div class="flex items-center gap-gutter-sm">
+          <span class="hidden sm:inline-flex items-center gap-gutter-xs px-gutter-sm py-gutter-xs rounded-full bg-dark-surface-container border border-dark-outline-variant font-label text-label-sm text-dark-on-surface-variant">
+            <span class="w-2 h-2 rounded-full bg-success" aria-hidden="true"></span>
+            <span data-design-text-token="label-sm">2025 GRID</span>
+          </span>
+          <button id="mobile-menu-btn" type="button" aria-label="Open navigation menu" class="lg:hidden inline-flex items-center justify-center w-10 h-10 bg-dark-surface-container-high text-dark-on-surface border border-dark-outline-variant rounded-sm">
+            <span class="material-symbols-outlined text-title-lg" aria-hidden="true">menu</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-nav" class="hidden lg:hidden border-t border-dark-outline-variant bg-dark-surface-container-low px-gutter-md py-gutter-md">
+        <div class="grid grid-cols-2 gap-gutter-sm">
+          <a href="../home/WiltzHome.html" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Home</a>
+          <a href="../live/WiltzLiveBoard.html" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Live</a>
+          <a href="../home/WiltzHome.html#schedule" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Schedule</a>
+          <a href="../home/WiltzHome.html#results" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Results</a>
+          <a href="#top" class="font-label text-label-lg uppercase text-dark-on-surface py-gutter-xs">Drivers</a>
+          <a href="../home/WiltzHome.html#teams" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Teams</a>
+          <a href="../home/WiltzHome.html#circuits" class="font-label text-label-lg uppercase text-dark-on-surface-variant py-gutter-xs">Circuits</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="flex-1">
+
+      <!-- HERO HEADER -->
+      <section class="border-b border-dark-outline-variant bg-dark-surface-container-lowest">
+        <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-section flex flex-col lg:flex-row lg:items-end justify-between gap-gutter-xl">
+          <div class="flex flex-col gap-gutter-md">
+            <div class="flex flex-wrap items-center gap-gutter-sm">
+              <span class="inline-flex items-center px-gutter-sm py-gutter-xs rounded-full bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider" data-design-text-token="label-sm">2025 FIA World Championship</span>
+              <span class="font-mono text-mono-md text-warning tabular-nums" data-design-text-token="mono-md">POINTS SYNC PENDING SUPABASE</span>
+            </div>
+            <h1 class="font-display text-display-lg-mobile md:text-display-lg uppercase tracking-tight text-dark-on-surface text-balance" data-design-text-token="display-lg">
+              2025 Driver Standings
+            </h1>
+            <p class="font-body text-body-lg text-dark-on-surface-variant max-w-prose text-pretty" data-design-text-token="body-lg">
+              All 20 drivers of the 2025 FIA Formula One grid. Select any driver card to open their full documentary profile, career milestones, and championship history.
+            </p>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-gutter-sm">
+            <label for="driver-search" class="sr-only">Search drivers</label>
+            <input id="driver-search" type="search" placeholder="Search driver or team..." class="bg-dark-surface-container border border-dark-outline-variant rounded-sm px-gutter-md py-gutter-sm font-body text-body-md text-dark-on-surface placeholder:text-dark-on-surface-variant focus:border-dark-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary">
+          </div>
+        </div>
+      </section>
+
+      <!-- CONSTRUCTOR FILTER BAR & DRIVER GRID -->
+      <section class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl flex flex-col gap-gutter-xl">
+        <div class="flex flex-wrap items-center gap-gutter-xs">
+          <button type="button" data-team="ALL" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider">All 20 Drivers</button>
+          <button type="button" data-team="McLaren" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high">McLaren</button>
+          <button type="button" data-team="Ferrari" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high">Ferrari</button>
+          <button type="button" data-team="Red Bull" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high">Red Bull</button>
+          <button type="button" data-team="Mercedes" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high">Mercedes</button>
+          <button type="button" data-team="Williams" class="team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high">Williams</button>
+        </div>
+
+        <div id="drivers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-lg items-stretch">
+          <!-- Populated via verified 2025 FIA Grid script -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer (Shell Parity) -->
+    <footer class="border-t border-dark-outline-variant bg-dark-surface-container-lowest">
+      <div class="max-w-7xl mx-auto px-gutter-md md:px-page-margin py-gutter-xl flex flex-col sm:flex-row items-center justify-between gap-gutter-md">
+        <div class="flex items-center gap-gutter-sm">
+          <span class="font-display text-title-md uppercase tracking-wider text-dark-on-surface" data-design-text-token="title-md">WILTZ</span>
+          <span class="font-body text-body-md text-dark-on-surface-variant" data-design-text-token="body-md">Formula 1 Digital Experience · 2025 FIA Season</span>
+        </div>
+        <span class="font-mono text-mono-md text-dark-on-surface-variant" data-design-text-token="mono-md">TELEMETRY PRECISION · PHASE 06</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <script data-stitch-original-script="33612bc2502bd53e===../../images/driver_norris.jpg|||fd5fc3450ed06cfa===../../images/driver_piastri.jpg|||197030a665dfd565===../../images/driver_leclerc.jpg|||481c126d8aec9ff4===../../images/driver_hamilton.jpg|||27fcf5604fd47257===../../images/driver_verstappen.jpg|||7e1fc772511f87ac===../../images/driver_russell.jpg">
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileNav = document.getElementById('mobile-nav');
+    if (menuBtn && mobileNav) {
+      menuBtn.addEventListener('click', () => mobileNav.classList.toggle('hidden'));
+    }
+
+    const driversGridData = [
+      { no: 4, code: 'NOR', name: 'Lando Norris', nat: 'United Kingdom', team: 'McLaren Formula 1 Team', key: 'McLaren', color: '#FF8000', img: 'https://lh3.googleusercontent.com/aida/ALJJyrBuFTOHqAJDEEx1vZ607fAP1S0o7VvvzW0qjJTE_62h5xMnPZ3o8ax8RXjFKw-sdyBbIzU1_y785ylizB2jcQZV2V1EQ734ybzCi5r9_LQrMI6VzJO6nHQVd5Ju9-HHeELhi8tKn0b9TEpG7fEeTwtdGpj-dgqjeTERZecOMWqld_i_HOMbe2kllPVXzBSdLsdbBNj8uHcudIXt3_dMiNvTii3dwsKcWNQ7btbtZKNuQfS58ubw03S7' },
+      { no: 81, code: 'PIA', name: 'Oscar Piastri', nat: 'Australia', team: 'McLaren Formula 1 Team', key: 'McLaren', color: '#FF8000', img: 'https://lh3.googleusercontent.com/aida/ALJJyrD9DlPQEG4z4Lkp0TAFcVglRjRNfF1onNKemzvF1vd8pDM4odnca5AYCvQasm4q3ihb-2NEcNiIV-26gtnXptZqTfbC1Wfjf4-HkzgJ3ptsaUE2hVe1uUxypacU96S8Mx7ta_3gh0QBL1QZ0vGnayFlZlm9y5TM2oW-6_QBta9QXx0MAdFEX5-ZDwiR4r_VSDdh6Hx9UwVa2phdclRTNn5IYKqDSRU1rUiApOeE5DuBr3ns8acxsfkJbw' },
+      { no: 16, code: 'LEC', name: 'Charles Leclerc', nat: 'Monaco', team: 'Scuderia Ferrari HP', key: 'Ferrari', color: '#E10600', img: 'https://lh3.googleusercontent.com/aida/ALJJyrBr3UD0hhi6IKyLjIokynvBT5WsNKqIFCXRafJTukLlAzHq-EKB1b65ETFeZFmx4BTgMevLExefuLcCRAuwwK1m0TyENdDAWdmhrdMj88dGZ_Thb9Eb_rxAo3e-aO15IZXUbd-F2ICNIbLICDIap-4lsIDBn7HFUvLl_UKXhde4fPtuRSF76E8gyM6QpThGESAIDYMDLkIVpYWuZqlOo6OYiX3th3MPnoxEDVLDyQlO8ZT7pTeqqpn9LA' },
+      { no: 44, code: 'HAM', name: 'Lewis Hamilton', nat: 'United Kingdom', team: 'Scuderia Ferrari HP', key: 'Ferrari', color: '#E10600', img: 'https://lh3.googleusercontent.com/aida/ALJJyrAdxKN2bwKXLVo4exCG_JNFYeE89K1pHuMgR4WdbcRV5WtJ_KKryO6JGUoq-WICdRE1Pn95EK-5s2BIphuOtAlWuly-nY5-kYQcWVXo0IBp7bpaGheyUEG9vgkwKTtKCYIplVzM83ekpNv9znCn53YPfmor4jecy8Nb3Vl33QoI8AR1O8CB586jYrj5eOgU5oDmqGToL-6GJV7zKwCk5s08RtSgPt0r177l50Lfr860bvdnN4hhfzOsNrI' },
+      { no: 1, code: 'VER', name: 'Max Verstappen', nat: 'Netherlands', team: 'Oracle Red Bull Racing', key: 'Red Bull', color: '#3671C6', img: 'https://lh3.googleusercontent.com/aida/ALJJyrDD4lSqaLrgyMHAj3rmwDBpUlFfXM7Lv5mltlXkNNZrwolgKdiuwX8vEvXhJRf1DCjC5oT9eIUervzStQiqNp8LaOpQtMOpjiFRthtXSXUBlOgzQb340LEn76UJEsB92msZ_RNspsL-q9qa1JM6Yj-yWngkCRmqJl8Xr2ZdEJezQ-RWvg8htUx9TMesLUclJKTNpGiaBo32T485KYPKpvayyRJ0_Kj5KVTtkgY9-l0u_e_ICiNCElyrijM6Gg' },
+      { no: 22, code: 'TSU', name: 'Yuki Tsunoda', nat: 'Japan', team: 'Oracle Red Bull Racing', key: 'Red Bull', color: '#3671C6', img: null },
+      { no: 63, code: 'RUS', name: 'George Russell', nat: 'United Kingdom', team: 'Mercedes-AMG Petronas', key: 'Mercedes', color: '#27F4D2', img: 'https://lh3.googleusercontent.com/aida/ALJJyrCbr6PfEGMoVlPdmAKPbRdUje_ZW2ndyA3BBIB9WkN1d3OFxgdp7zP67RbysrItGQavwXVACh1AvCBsBpetWd3VaOzHwPCzi6mSTqxgwrZzHhHty0a6j8nF8U8d-pQ-zKzebCSuTSqMXzRlwvEyNngIIEk4tzdwxo8ktM7K6grxraMzxczuWW1lu4R2rbl0dlyGLeLhdobvTEkRintnF9rMNWj_CDXZIdm0ibQspsWDg6bpQpJvNfKqYA' },
+      { no: 12, code: 'ANT', name: 'Andrea Kimi Antonelli', nat: 'Italy', team: 'Mercedes-AMG Petronas', key: 'Mercedes', color: '#27F4D2', img: null },
+      { no: 14, code: 'ALO', name: 'Fernando Alonso', nat: 'Spain', team: 'Aston Martin Aramco', key: 'Aston Martin', color: '#229971', img: null },
+      { no: 18, code: 'STR', name: 'Lance Stroll', nat: 'Canada', team: 'Aston Martin Aramco', key: 'Aston Martin', color: '#229971', img: null },
+      { no: 55, code: 'SAI', name: 'Carlos Sainz', nat: 'Spain', team: 'Atlassian Williams Racing', key: 'Williams', color: '#64C4FF', img: null },
+      { no: 23, code: 'ALB', name: 'Alexander Albon', nat: 'Thailand', team: 'Atlassian Williams Racing', key: 'Williams', color: '#64C4FF', img: null },
+      { no: 10, code: 'GAS', name: 'Pierre Gasly', nat: 'France', team: 'BWT Alpine F1 Team', key: 'Alpine', color: '#FF87BC', img: null },
+      { no: 7, code: 'DOO', name: 'Jack Doohan', nat: 'Australia', team: 'BWT Alpine F1 Team', key: 'Alpine', color: '#FF87BC', img: null },
+      { no: 31, code: 'OCO', name: 'Esteban Ocon', nat: 'France', team: 'MoneyGram Haas F1 Team', key: 'Haas', color: '#B6BABD', img: null },
+      { no: 87, code: 'BEA', name: 'Oliver Bearman', nat: 'United Kingdom', team: 'MoneyGram Haas F1 Team', key: 'Haas', color: '#B6BABD', img: null },
+      { no: 30, code: 'LAW', name: 'Liam Lawson', nat: 'New Zealand', team: 'Visa Cash App Racing Bulls', key: 'Racing Bulls', color: '#6692FF', img: null },
+      { no: 6, code: 'HAD', name: 'Isack Hadjar', nat: 'France', team: 'Visa Cash App Racing Bulls', key: 'Racing Bulls', color: '#6692FF', img: null },
+      { no: 27, code: 'HUL', name: 'Nico Hulkenberg', nat: 'Germany', team: 'Stake F1 Team Kick Sauber', key: 'Sauber', color: '#52E252', img: null },
+      { no: 5, code: 'BOR', name: 'Gabriel Bortoleto', nat: 'Brazil', team: 'Stake F1 Team Kick Sauber', key: 'Sauber', color: '#52E252', img: null }
+    ];
+
+    const gridEl = document.getElementById('drivers-grid');
+    const searchInput = document.getElementById('driver-search');
+    let currentTeam = 'ALL';
+    let currentQuery = '';
+
+    function renderDrivers() {
+      if (!gridEl) return;
+      const filtered = driversGridData.filter(d => {
+        const matchTeam = currentTeam === 'ALL' || d.key === currentTeam;
+        const matchQuery = !currentQuery || d.name.toLowerCase().includes(currentQuery) || d.team.toLowerCase().includes(currentQuery) || d.code.toLowerCase().includes(currentQuery);
+        return matchTeam && matchQuery;
+      });
+
+      gridEl.innerHTML = '';
+      filtered.forEach((d) => {
+        const card = document.createElement('a');
+        card.href = `WiltzDriverProfile.html?driver=${d.code}`;
+        card.setAttribute('data-component-id', 'card-interactive');
+        card.setAttribute('data-component-type', 'card');
+        card.setAttribute('data-component-variant', 'interactive');
+        card.className = 'group bg-dark-surface-container border border-dark-outline-variant rounded-md overflow-hidden flex flex-col h-full transition-transform duration-surface-enter ease-surface-enter hover:-translate-y-1 hover:border-dark-outline focus-visible:outline focus-visible:outline-2 focus-visible:outline-dark-primary';
+
+        const mediaHtml = d.img
+          ? `<img src="${d.img}" alt="${d.name} studio portrait" class="w-full h-64 object-cover transition-transform duration-surface-enter group-hover:scale-105">`
+          : `<div class="w-full h-64 bg-dark-surface-container-low flex items-center justify-center border-b border-dark-outline-variant">
+               <span class="font-display text-display-xl text-dark-on-surface-variant">${d.code}</span>
+             </div>`;
+
+        card.innerHTML = `
+          <div class="relative overflow-hidden">
+            ${mediaHtml}
+            <span class="absolute top-gutter-md left-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-md text-dark-on-surface-variant border border-dark-outline-variant">POS —</span>
+            <span class="absolute top-gutter-md right-gutter-md px-gutter-sm py-gutter-xs rounded-sm bg-dark-surface-container-lowest/90 font-mono text-mono-lg text-dark-on-surface tabular-nums border border-dark-outline-variant">#${d.no}</span>
+          </div>
+          <div class="p-gutter-lg flex-1 flex flex-col justify-between gap-gutter-md">
+            <div>
+              <div class="flex items-center gap-gutter-xs">
+                <span class="w-1.5 h-3.5 rounded-full shrink-0" style="background-color: ${d.color};"></span>
+                <span class="font-label text-label-sm uppercase tracking-wider text-dark-on-surface-variant">${d.team}</span>
+              </div>
+              <h2 class="font-headline text-title-lg text-dark-on-surface mt-gutter-xs">${d.name}</h2>
+              <p class="font-label text-label-sm text-dark-on-surface-variant uppercase mt-gutter-xs">${d.nat}</p>
+            </div>
+            <div class="pt-gutter-md border-t border-dark-outline-variant grid grid-cols-3 gap-gutter-xs text-center">
+              <div>
+                <span class="font-label text-label-sm uppercase text-dark-on-surface-variant">PTS</span>
+                <p class="font-mono text-mono-md text-dark-on-surface tabular-nums">—</p>
+              </div>
+              <div>
+                <span class="font-label text-label-sm uppercase text-dark-on-surface-variant">WINS</span>
+                <p class="font-mono text-mono-md text-dark-on-surface tabular-nums">—</p>
+              </div>
+              <div>
+                <span class="font-label text-label-sm uppercase text-dark-on-surface-variant">PODS</span>
+                <p class="font-mono text-mono-md text-dark-on-surface tabular-nums">—</p>
+              </div>
+            </div>
+          </div>
+        `;
+        gridEl.appendChild(card);
+      });
+    }
+
+    renderDrivers();
+
+    document.querySelectorAll('.team-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentTeam = btn.getAttribute('data-team') || 'ALL';
+        document.querySelectorAll('.team-filter-btn').forEach(b => {
+          b.className = 'team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-surface-container text-dark-on-surface border border-dark-outline-variant font-label text-label-sm uppercase tracking-wider hover:bg-dark-surface-container-high';
+        });
+        btn.className = 'team-filter-btn px-gutter-md py-gutter-xs rounded-sm bg-dark-primary-container text-dark-on-primary-container font-label text-label-sm uppercase tracking-wider';
+        renderDrivers();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentQuery = (e.target.value || '').trim().toLowerCase();
+        renderDrivers();
+      });
+    }
+  </script>
+
+
+</body></html>
