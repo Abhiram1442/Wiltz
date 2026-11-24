@@ -237,11 +237,14 @@ export function ThreeF1CarHero() {
 
     // Render / Animation Loop
     let animationFrameId: number;
+    const clock = new THREE.Clock();
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
+      const elapsed = clock.getElapsedTime();
       if (autoRotateRef.current && !isDragging) {
         carGroup.rotation.y += 0.0035;
       }
+      carGroup.position.y = Math.sin(elapsed * 0.8) * 0.02;
       camera.position.lerp(targetCamPosRef.current, 0.06);
       camera.lookAt(0.6, 0.35, 0);
       renderer.render(scene, camera);

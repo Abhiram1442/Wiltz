@@ -1,20 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --f1-red: #e10600;
-  --f1-red-hover: #ff1801;
-  --f1-dark: #07080a;
-  --f1-surface-1: #0e1015;
-  --f1-surface-2: #141720;
-  --f1-surface-3: #1c202c;
-  --f1-card: #12151d;
-  --f1-border: rgba(255, 255, 255, 0.08);
-  --f1-border-glow: rgba(225, 6, 0, 0.35);
-  --f1-cyan: #00d2be;
-  --f1-yellow: #ffd700;
-  --f1-green: #00d084;
-  --f1-purple: #b388ff;
-  --f1-text-muted: #8b92a0;
+  --wiltz-bg: #07080a;
+  --wiltz-surface-1: #0e1015;
+  --wiltz-surface-2: #14171f;
+  --wiltz-surface-3: #1c202c;
+  --wiltz-red: #e10600;
+  --wiltz-red-hover: #ff1801;
+  --wiltz-cyan: #00d2be;
+  --wiltz-yellow: #ffd700;
+  --wiltz-green: #00d084;
+  --wiltz-purple: #b388ff;
+  --wiltz-text: #f4f6f8;
+  --wiltz-text-muted: #a1a8b3;
+  --wiltz-text-dim: #6b7280;
+  --wiltz-border: rgba(255, 255, 255, 0.08);
+  --wiltz-border-glow: rgba(225, 6, 0, 0.35);
+  --wiltz-card: #12151d;
+
+  /* Legacy aliases */
+  --f1-red: var(--wiltz-red);
+  --f1-red-hover: var(--wiltz-red-hover);
+  --f1-dark: var(--wiltz-bg);
+  --f1-surface-1: var(--wiltz-surface-1);
+  --f1-surface-2: var(--wiltz-surface-2);
+  --f1-surface-3: var(--wiltz-surface-3);
+  --f1-card: var(--wiltz-card);
+  --f1-border: var(--wiltz-border);
+  --f1-border-glow: var(--wiltz-border-glow);
+  --f1-cyan: var(--wiltz-cyan);
+  --f1-yellow: var(--wiltz-yellow);
+  --f1-green: var(--wiltz-green);
+  --f1-purple: var(--wiltz-purple);
+  --f1-text-muted: var(--wiltz-text-muted);
 }
 
 * {
@@ -26,7 +44,7 @@ html {
 }
 
 body {
-  background-color: #07080a;
+  background-color: var(--wiltz-bg);
   color: #ffffff;
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
@@ -38,22 +56,22 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #07080a;
+  background: var(--wiltz-bg);
 }
 ::-webkit-scrollbar-thumb {
   background: #222634;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #e10600;
+  background: var(--wiltz-red);
 }
 
-/* ── Motorsport Carbon & Glass Panels ── */
+/* ── Glass & Card Panels ── */
 .f1-glass-panel {
   background: rgba(14, 16, 21, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--wiltz-border);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
 }
 
@@ -72,7 +90,7 @@ body {
   box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.9), 0 0 24px rgba(225, 6, 0, 0.15);
 }
 
-/* Animations */
+/* ── Keyframe Animations ── */
 @keyframes speedPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(1.15); }
@@ -83,6 +101,35 @@ body {
   100% { transform: translateX(200%); }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barFill {
+  from { width: 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(225, 6, 0, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(225, 6, 0, 0.6); }
+}
+
 .animate-speed-pulse {
   animation: speedPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -91,21 +138,56 @@ body {
   animation: trackBeam 2.5s ease-in-out infinite;
 }
 
-/* Legacy Utilities preserved */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out both;
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.5s ease-out both;
+}
+
+.animate-slide-down {
+  animation: slideDown 0.3s ease-out both;
+}
+
+.animate-glow-pulse {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+/* Staggered entrance delays */
+.stagger-1 { animation-delay: 50ms; }
+.stagger-2 { animation-delay: 100ms; }
+.stagger-3 { animation-delay: 150ms; }
+.stagger-4 { animation-delay: 200ms; }
+.stagger-5 { animation-delay: 250ms; }
+.stagger-6 { animation-delay: 300ms; }
+.stagger-7 { animation-delay: 350ms; }
+.stagger-8 { animation-delay: 400ms; }
+.stagger-9 { animation-delay: 450ms; }
+.stagger-10 { animation-delay: 500ms; }
+.stagger-11 { animation-delay: 550ms; }
+.stagger-12 { animation-delay: 600ms; }
+
+/* Page mount transition */
+.page-enter {
+  animation: fadeUp 0.4s ease-out both;
+}
+
+/* ── Legacy Utilities ── */
 .text-f1-red {
-  color: var(--f1-red);
+  color: var(--wiltz-red);
 }
 .bg-f1-red {
-  background-color: var(--f1-red);
+  background-color: var(--wiltz-red);
 }
 .border-f1-red {
-  border-color: var(--f1-red);
+  border-color: var(--wiltz-red);
 }
 .bg-f1-card {
-  background-color: var(--f1-card);
+  background-color: var(--wiltz-card);
 }
 .border-f1 {
-  border-color: var(--f1-border);
+  border-color: var(--wiltz-border);
 }
 .live-pulse {
   animation: speedPulse 2s ease-in-out infinite;
@@ -137,8 +219,13 @@ body {
   font-weight: 700;
 }
 .f1-panel {
-  background-color: var(--f1-card);
-  border: 1px solid var(--f1-border);
+  background-color: var(--wiltz-card);
+  border: 1px solid var(--wiltz-border);
+  border-radius: 0.75rem;
+}
+.f1-card {
+  background-color: var(--wiltz-card);
+  border: 1px solid var(--wiltz-border);
   border-radius: 0.75rem;
 }
 .section-header {
@@ -157,7 +244,7 @@ body {
   display: inline-block;
   width: 3px;
   height: 0.875rem;
-  background-color: var(--f1-red);
+  background-color: var(--wiltz-red);
   border-radius: 1px;
 }
 .driver-number {

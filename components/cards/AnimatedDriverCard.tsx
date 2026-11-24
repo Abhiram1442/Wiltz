@@ -118,15 +118,15 @@ export function AnimatedDriverCard({ driver, team, rank, points, career }: Anima
             </div>
             <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
               <div className="text-[9px] font-bold text-gray-400 uppercase">GPs</div>
-              <div className="text-xs font-black font-mono text-white mt-0.5">{career.grandPrixEntered}</div>
+              <div className="text-xs font-black font-mono text-white mt-0.5">{career.starts ?? career.raceStarts ?? 0}</div>
             </div>
             <div className="bg-black/30 rounded-lg py-1.5 px-1 border border-white/5">
               <div className="text-[9px] font-bold text-gray-400 uppercase">Titles</div>
               <div className="text-xs font-black font-mono text-yellow-400 mt-0.5 flex items-center justify-center gap-0.5">
-                {career.worldChampionships > 0 ? (
+                {(career.worldChampionships ?? career.championships ?? 0) > 0 ? (
                   <>
                     <Trophy size={11} className="text-yellow-400 fill-yellow-400" />
-                    <span>{career.worldChampionships}</span>
+                    <span>{career.worldChampionships ?? career.championships ?? 0}</span>
                   </>
                 ) : (
                   <span>0</span>
